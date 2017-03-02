@@ -1,0 +1,28 @@
+{
+  "name": "sugarcpp",
+  "version": "0.0.1",
+  "description": "Make CPP Great Again",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xfdingustc/SugarCpp.git"
+  },
+  "keywords": [
+    "cpp"
+  ],
+  "author": "xfding",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xfdingustc/SugarCpp/issues"
+  },
+  "homepage": "https://github.com/xfdingustc/SugarCpp#readme",
+  "devDependencies": {
+    
+  }
+}
