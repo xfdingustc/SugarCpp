@@ -1,7 +1,8 @@
 fs                        = require 'fs'
 path                      = require 'path'
 { spawn, exec, execSync } = require 'child_process'
-{EventEmitter} = require 'events'
+SugarScript               = require './lib/sugar-script/sugar-script'
+
 
 printLine = (line) -> process.stdout.write line + '\n'
 
@@ -37,4 +38,11 @@ run = (args, cb) ->
     process.exit(1) if status isnt 0
     cb() if typeof cb is 'function'   
 
+# Run the SugarCpp test suite
+runTests = (SugarScript) ->
+  SugarScript.register()    
+
 task 'build', 'build the SugarCpp language from source', build
+
+task 'test', 'run the SugarCpp language test suite', ->
+  runTests SugarScript
