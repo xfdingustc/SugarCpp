@@ -18,6 +18,7 @@ SWITCHES = [
 opts = {}
 
 exports.run = ->
+    printLine 'Fuck!!!'
     parseOptions()
     return compileScript null, opts.arguments[0] if opts.eval
 
