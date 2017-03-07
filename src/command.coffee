@@ -14,6 +14,8 @@ SWITCHES = [
     ['-o', '--output [DIR]', 'set the output directly to the "node" binary']
 ]
 
+printLine = (line) -> process.stdout.write line + '\n'
+
 # Top-level objects shared by all the functions.
 opts = {}
 
