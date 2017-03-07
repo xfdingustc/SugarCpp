@@ -1,0 +1,4 @@
+class TestClass {
+    public int a;
+    private float b;
+}

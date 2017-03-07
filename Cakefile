@@ -39,6 +39,10 @@ run = (args, cb) ->
     process.exit(1) if status isnt 0
     cb() if typeof cb is 'function'   
 
+# Log a message with a color.
+log = (message, color, explanation) ->
+  console.log color + message + reset + ' ' + (explanation or '')
+
 # Run the SugarCpp test suite
 runTests = (SugarScript) ->
   SugarScript.register()    
@@ -66,6 +70,21 @@ runTests = (SugarScript) ->
         description: description if description?
         source: fn.toString() if fn.toString?
 
+  # When all the tests have run, collect and print errors.
+  # If a stacktrace is available, output the compiled function source.
+  process.on 'exit', ->
+    time = ((Date.now() - startTime) / 1000).toFixed(2)
+    message = "passed #{passedTests} tests in #{time} seconds#{reset}"
+    return log(message, green) unless failures.length
+    log "failed #{failures.length} and #{message}", red
+    for fail in failures
+      {error, filename, description, source}  = fail
+      console.log ''
+      log "  #{description}", red if description
+      log "  #{error.stack}", red
+      console.log "  #{source}" if source
+    return      
+
   # Run every test in the 'test' folder, recording failures
   files = fs.readdirSync 'test'
 
@@ -74,7 +93,7 @@ runTests = (SugarScript) ->
     code = fs.readFileSync filename
     try 
       SugarScript.run code.toString(), {filename}
-    catch
+    catch error
       failures.push {filename, error}
   return !failures.length    
 

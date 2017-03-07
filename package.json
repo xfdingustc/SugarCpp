@@ -23,6 +23,6 @@
   },
   "homepage": "https://github.com/xfdingustc/SugarCpp#readme",
   "devDependencies": {
-    
+    "jison": ">=0.4.17"
   }
 }
