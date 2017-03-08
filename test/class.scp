@@ -1,4 +1,3 @@
-class TestClass {
-    public int a;
-    private float b;
-}
+a = 10
+
+ 

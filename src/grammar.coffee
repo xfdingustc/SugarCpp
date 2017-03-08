@@ -29,9 +29,63 @@ o = (patternString, action, options) ->
 
 grammar = 
   Root: [
-    o '',             -> new Block
+    o '',                         -> new Block
     o 'Body'
   ]
+
+  Body: [
+    o 'Line',                                 -> Block.wrap [$1]
+    o 'Body TERMINATOR Line',                 -> $1.push $3
+    o 'Body TERMINATOR'
+  ]
+
+  Line: [
+    o 'Expression'
+  ]
+
+  Expression: [
+    o 'Value'
+    o 'Assign'
+  ]
+
+  Block: [
+    o 'INDENT OUTDENT',                         -> new Block
+    o 'INDENT Body OUTDENT',                    -> $2
+  ]
+
+  Identifier: [
+    o 'IDENTIFIER',                             -> new IdentifierLiteral $1
+  ]
+
+  Literal: [
+    o 'AlphaNumeric'
+  ]
+
+  AlphaNumeric: [
+    o 'NUMBER',                                 -> new NumberLiteral $1
+  ]
+
+  Assign: [
+    o 'Assignable = Expression',                -> new Assign $1, $3
+    o 'Assignable = TERMINATOR Expression',     -> new Assign $1, $4
+    o 'Assignable = INDENT Expression OUTDENT', -> new Assign $1, $4
+  ]
+
+  # Variables and properties that can be assigned to.
+  SimpleAssignable: [
+    o 'Identifier',                             -> new Value $1
+  ]
+
+
+  Assignable: [
+    o 'SimpleAssignable'
+    o 'Literal',                                -> new Value $1
+  ]
+
+  Value: [
+    o 'Assignable'
+  ]
+
 
 operators = [
   ['left',  '.', '?.',  '::', '?::']
