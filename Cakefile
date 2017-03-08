@@ -101,5 +101,17 @@ runTests = (SugarScript) ->
 
 task 'build', 'build the SugarCpp language from source', build
 
+task 'build:parser', 'rebuild the Jison parser (run build first)', ->
+  helpers.extend global, require 'util'
+  require 'jison'
+  parser = require('./lib/sugar-script/grammar').parser.generate()
+
+  parser = parser.replace "var source = require('fs')", """
+      var source = '';
+          var fs = require('fs');
+          if (typeof fs !== 'undefined' && fs !== null)
+              source = fs"""
+  fs.writeFileSync 'lib/sugar-script/parser.js', parser
+
 task 'test', 'run the SugarCpp language test suite', ->
   runTests SugarScript

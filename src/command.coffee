@@ -20,9 +20,9 @@ printLine = (line) -> process.stdout.write line + '\n'
 opts = {}
 
 exports.run = ->
-    printLine 'Fuck!!!'
-    parseOptions()
-    return compileScript null, opts.arguments[0] if opts.eval
+  printLine 'Fuck!!!'
+  parseOptions()
+  return compileScript null, opts.arguments[0] if opts.eval
 
 
 compileScript = (file, input, base = null) ->
@@ -63,10 +63,10 @@ compileScript = (file, input, base = null) ->
 
 
 parseOptions = ->
-    optionParser  = new optparse.OptionParser SWITCHES, BANNER
-    o = opts      = optionParser.parse process.argv[2..]
-    o.compile     or= !!o.output
-    o.run         = not (o.compile or o.print or o.map)
-    o.print       = !! (o.print or (o.eval or o.stdio and o.compile))
+  optionParser  = new optparse.OptionParser SWITCHES, BANNER
+  o = opts      = optionParser.parse process.argv[2..]
+  o.compile     or= !!o.output
+  o.run         = not (o.compile or o.print or o.map)
+  o.print       = !! (o.print or (o.eval or o.stdio and o.compile))
 
 

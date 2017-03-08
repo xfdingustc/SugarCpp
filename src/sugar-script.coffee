@@ -1,7 +1,7 @@
 fs          = require 'fs'
 path        = require 'path'
 {Lexer}     = require './lexer'
-{parser}    = require './parser'
+#{parser}    = require './parser'
 helpers     = require './helpers'
 SourceMap   = require './sourcemap'
 
