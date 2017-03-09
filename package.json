@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@types/node": "latest",
+    "@types/gulp-typescript": "latest",
     "gulp": "latest",
     "gulp-help": "latest",
     "gulp-insert": "latest",

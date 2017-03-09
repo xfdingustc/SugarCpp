@@ -1,10 +1,12 @@
 {
+  "extends": "../tsconfig-base",
   "compilerOptions": {
     "removeComments": true,
     "outFile": "../../built/local/scc.js",
     "declaration": true
   },
   "files": [
+    "sys.ts",
     "scc.ts"
   ]
 }

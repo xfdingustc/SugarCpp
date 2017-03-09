@@ -31,11 +31,11 @@ function getCompilerSettings(base: tsc.Settings, useBulitcompiler?: boolean): ts
 }
 
 gulp.task(builtLocalCompiler, false, [serviceFile], () => {
-  // const localCompilerProject = tsc.createProject("src/compiler/tsconfig.json", getCompilerSettings({}, true));
-  // return localCompilerProject.src()
-  //   .pipe(newer(builtLocalCompiler))
-  //   .pipe(localCompilerProject())
-  //   .pipe(gulp.dest("."));
+  const localCompilerProject = tsc.createProject("src/compiler/tsconfig.json", getCompilerSettings({}, false));
+  return localCompilerProject.src()
+    .pipe(newer(builtLocalCompiler))
+    .pipe(localCompilerProject())
+    .pipe(gulp.dest("."));
 });
 
 gulp.task(serviceFile, false, [], () => {

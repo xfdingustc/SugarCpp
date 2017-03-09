@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "lib": ["es5", "scripthost"],
+    "target": "es5",
+    "types": []
+  }
+}
