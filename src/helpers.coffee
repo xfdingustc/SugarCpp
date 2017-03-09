@@ -1,5 +1,6 @@
 
-printLine = (line) -> process.stdout.write line + '\n'
+exports.printLine = (line) -> 
+  process.stdout.write line + '\n'
 
 
 
