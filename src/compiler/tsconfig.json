@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "removeComments": true,
+    "outFile": "../../built/local/scc.js",
+    "declaration": true
+  },
+  "files": [
+    "scc.ts"
+  ]
+}
