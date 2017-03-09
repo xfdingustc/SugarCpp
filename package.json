@@ -22,7 +22,11 @@
     "url": "https://github.com/xfdingustc/SugarCpp/issues"
   },
   "homepage": "https://github.com/xfdingustc/SugarCpp#readme",
+  "engines": {
+    "node": ">=4.2.0"
+  },
   "devDependencies": {
+    "@types/node": "latest",
     "gulp": "latest",
     "gulp-help": "latest",
     "gulp-insert": "latest",

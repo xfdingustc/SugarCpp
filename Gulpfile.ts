@@ -12,8 +12,11 @@ const compilerFilename = "scc.js";
 
 const gulp = helpMaker(originalGulp);
 
+
+
 const builtLocalCompiler = path.join(builtLocalDirectory, compilerFilename);
 const serviceFile = path.join(builtLocalDirectory, "sugarCppServices.js")
+
 
 function getCompilerSettings(base: tsc.Settings, useBulitcompiler?: boolean): tsc.Settings {
   const copy: tsc.Settings = {};
@@ -28,11 +31,15 @@ function getCompilerSettings(base: tsc.Settings, useBulitcompiler?: boolean): ts
 }
 
 gulp.task(builtLocalCompiler, false, [serviceFile], () => {
-  const localCompilerProject = tsc.createProject("src/compiler/tsconfig.json", getCompilerSettings({}, true));
-  return localCompilerProject.src()
-    .pipe(newer(builtLocalCompiler))
-    .pipe(localCompilerProject())
-    .pipe(gulp.dest("."));
+  // const localCompilerProject = tsc.createProject("src/compiler/tsconfig.json", getCompilerSettings({}, true));
+  // return localCompilerProject.src()
+  //   .pipe(newer(builtLocalCompiler))
+  //   .pipe(localCompilerProject())
+  //   .pipe(gulp.dest("."));
+});
+
+gulp.task(serviceFile, false, [], () => {
+
 });
 
 gulp.task("local", "Builds the full compiler", [builtLocalCompiler])
