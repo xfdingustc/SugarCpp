@@ -1,1 +1,0 @@
-SugarScript = require './sugar-script'
