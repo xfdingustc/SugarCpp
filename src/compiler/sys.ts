@@ -4,8 +4,17 @@ namespace sc {
     write(s: string): void;
   }
 
+  declare var process: any;
+
+
   export let sys: System = (function(){
-    let sys: System;
+    const sys: System = {
+      args: process.argv.slice(2),
+      write(s: string): void {
+        process.stdout.write(s);
+      }
+    }
+
     return sys;
   })();
 }

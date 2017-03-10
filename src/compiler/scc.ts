@@ -1,8 +1,17 @@
 /// <reference path="sys.ts" />
+/// <reference path="commandLineParser.ts" />
+
 namespace sc {
   export function executeCommandLine(args: string[]): void {
-    args[0] = "test";
+    const commandLine = parseCommandLine(args);
+    let i = 0;
+    while (i < commandLine.fileNames.length) {
+      sys.write(commandLine.fileNames[i]);
+      i++;
+    }
+    
   }
+
 
 
 }
