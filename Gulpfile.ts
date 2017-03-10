@@ -32,12 +32,6 @@ function getCompilerSettings(base: tsc.Settings, useBulitcompiler?: boolean): ts
     copy[key] = base[key];
   }
 
-  if (useBulitcompiler === true) {
-   // copy.typescript = require("./built/local/typescript.js");
-  }
-  else if (useBulitcompiler === false) {
-   // copy.typescript = require("./lib/typescript.js");
-  }
   return copy;
 }
 
@@ -57,3 +51,7 @@ gulp.task("local", "Builds the full compiler", [builtLocalCompiler])
 gulp.task("clean", "Cleans the compiler output, declare files, and tests", [], ()=>{
   return del([builtDirectory]);
 })
+
+gulp.task("rebuild", "Rebuild the compiler", ["clean", "local"], () => {
+
+});
