@@ -1,3 +1,5 @@
+/// <reference path="core.ts" />
+
 namespace sc {
   export interface System {
     args: string[];
