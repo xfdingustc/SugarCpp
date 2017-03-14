@@ -6,7 +6,14 @@
     "declaration": true
   },
   "files": [
+    "commandLineParser.ts",
+    "core.ts",
+    "parser.ts",
+    "program.ts",
+    "scanner.ts",
+    "scc.ts",
     "sys.ts",
-    "scc.ts"
+    "types.ts", 
+    "utilities.ts"
   ]
 }

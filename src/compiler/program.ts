@@ -4,9 +4,20 @@
 /// <reference path="parser.ts" />
 
 namespace sc {
-  export function createProgram(rootNames: string[]): Program  {
+  export function createProgram(rootNames: string[], host?: CompilerHost, oldProgram?: Program): Program  {
     let program: Program;
     let files: SourceFile[] = [];
+
+    let fileProcessingDiagnostics = createDiagnosticCollection();
+
+    host = host || createCompilerHost();
+
+    sys.write("rootNames: " + rootNames);
+
+    if (true/*!tryReuseStructureFromOldProgram()*/) {
+      forEach(rootNames, name => processRootFile(name, false));
+    }
+
     program = {
       getRootFileNames: () => rootNames,
       getSourceFiles: () => files,
@@ -18,6 +29,7 @@ namespace sc {
     function getSyntacticDiagnostics(sourceFile: SourceFile, cancellationToken: CancellationToken): Diagnostic[] {
       return getDiagnosticsHelper(sourceFile, getSyntacticDiagnosticsForFile, cancellationToken);
     }
+    
 
     function getDiagnosticsHelper(
         sourceFile: SourceFile, 
@@ -46,7 +58,29 @@ namespace sc {
       return sourceFile.parseDiagnostics;
     }
 
-    
+    function processRootFile(fileName: string, isDefaultLib: boolean) {
+      processSourceFile(normalizePath(fileName), isDefaultLib);
+    }
+
+    function processSourceFile(fileName: string, isDefaultLib: boolean, refFile?: SourceFile, refPos?: number, refEnd?: number) {
+      let diagnosticArgument: string[];
+      let diagnostic: DiagnosticMessage;
+
+
+      if (hasExtension(fileName)) {
+        sys.write("has extension");
+        if (!findSourceFile(fileName)) {
+          diagnostic = Diagnostic.F
+        }
+      }
+    }
+
+    function findSourceFile(fileName: string): SourceFile {
+      const file = host.getSourceFile(fileName, hostErrorMessage => {
+
+      });
+      return file;
+    }
 
   }
 

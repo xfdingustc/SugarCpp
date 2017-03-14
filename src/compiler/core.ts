@@ -4,6 +4,94 @@ namespace sc {
 }
 
 namespace sc {
+
+
+  /** Create a new map. If a template object is provided, the map will copy entries from it. */
+  export function createMap<T>(): Map<T> {
+    return new MapCtr<T>();
+  }
+
+  const MapCtr = typeof Map !== "undefined" && "entries" in Map.prototype ? Map : shimMap();
+
+  // Keep the class inside a function so it doesn't get compiled if it's not used.
+  function shimMap(): { new<T>(): Map<T> } {
+
+        class MapIterator<T, U extends (string | T | [string, T])> {
+            private data: MapLike<T>;
+            private keys: string[];
+            private index = 0;
+            private selector: (data: MapLike<T>, key: string) => U;
+            constructor(data: MapLike<T>, selector: (data: MapLike<T>, key: string) => U) {
+                this.data = data;
+                this.selector = selector;
+                this.keys = Object.keys(data);
+            }
+
+            public next(): { value: U, done: false } | { value: never, done: true } {
+                const index = this.index;
+                if (index < this.keys.length) {
+                    this.index++;
+                    return { value: this.selector(this.data, this.keys[index]), done: false };
+                }
+                return { value: undefined as never, done: true }
+            }
+        }
+
+        return class<T> implements Map<T> {
+            private data = createDictionaryObject<T>();
+            public size = 0;
+
+            get(key: string): T {
+                return this.data[key];
+            }
+
+            set(key: string, value: T): this {
+                if (!this.has(key)) {
+                    this.size++;
+                }
+                this.data[key] = value;
+                return this;
+            }
+
+            has(key: string): boolean {
+                // tslint:disable-next-line:no-in-operator
+                return key in this.data;
+            }
+
+            delete(key: string): boolean {
+                if (this.has(key)) {
+                    this.size--;
+                    delete this.data[key];
+                    return true;
+                }
+                return false;
+            }
+
+            clear(): void {
+                this.data = createDictionaryObject<T>();
+                this.size = 0;
+            }
+
+            keys() {
+                return new MapIterator(this.data, (_data, key) => key);
+            }
+
+            values() {
+                return new MapIterator(this.data, (data, key) => data[key]);
+            }
+
+            entries() {
+                return new MapIterator(this.data, (data, key) => [key, data[key]] as [string, T]);
+            }
+
+            forEach(action: (value: T, key: string) => void): void {
+                for (const key in this.data) {
+                    action(this.data[key], key);
+                }
+            }
+        }
+    }
+
   export function forEach<T, U>(array: T[] | undefined, callback: (element: T, index: number) => U | undefined): U | undefined {
     if (array) {
       for (let i = 0; i < array.length; i++) {
@@ -37,6 +125,18 @@ namespace sc {
       to = append(to, v);
     }
     return to;
+  }
+
+  export function getBaseFileName(path: string) {
+    if (path === undefined) {
+      return undefined;
+    }
+    const i = path.lastIndexOf(directorySeparator);
+    return i < 0 ? path : path.substring(i + 1);
+  }
+
+  export function hasExtension(fileName: string): boolean {
+    return getBaseFileName(fileName).indexOf(".") >= 0;
   }
 
   export function lastOrUndefined<T>(array: T[]): T {

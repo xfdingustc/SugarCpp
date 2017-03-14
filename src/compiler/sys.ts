@@ -3,8 +3,10 @@
 namespace sc {
   export interface System {
     args: string[];
+    newLine: string;
     write(s: string): void;
     readFile(path: string): string;
+    writeFile(path: string, data: string, writeByteOrderMark?: boolean): void;
   }
 
   declare var require: any;
@@ -16,12 +18,16 @@ namespace sc {
 
     function getNodeSystem(): System {
       const _fs = require("fs");
+      const _os = require("os");
+
       const nodeSystem: System = {
         args: process.argv.slice(2),
+        newLine: _os.EOL,
         write(s: string): void {
           process.stdout.write(s);
         },
-        readFile
+        readFile,
+        writeFile
       }
 
       function readFile(fileName: string, _encoding?: string): string {
@@ -52,6 +58,25 @@ namespace sc {
         }
         // Default is UTF-8 with no byte order mark
         return buffer.toString("utf8");
+      }
+
+      function writeFile(fileName: string, data: string, writeByteOrderMark?: boolean): void {
+        // If a BOM is required, emit one
+        if (writeByteOrderMark) {
+          data = "\uFEFF" + data;
+        }
+
+        let fd: number;
+
+        try {
+          fd = _fs.openSync(fileName, "w");
+          _fs.writeSync(fd, data, undefined, "utf8");
+        }
+        finally {
+          if (fd !== undefined) {
+            _fs.closeSync(fd);
+          }
+        }
       }
 
       const enum FileSystemEntryKind {

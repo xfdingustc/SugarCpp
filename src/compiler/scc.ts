@@ -18,15 +18,15 @@ namespace sc {
         compilerHost = createCompilerHost();
       }
       
-      compile(rootfileNames);
+      compile(rootfileNames, compilerHost);
     }
     
     
   }
 
 
-  function compile(fileNames: string[]) {
-    const program = createProgram(fileNames);
+  function compile(fileNames: string[], compilerHost: CompilerHost) {
+    const program = createProgram(fileNames, compilerHost);
     const exitStatus = compileProgram();
     return {program, exitStatus};
 
