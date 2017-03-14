@@ -3,7 +3,7 @@
 /// <reference path="../destructuring.ts" />
 
 /*@internal*/
-namespace ts {
+namespace sc {
     export function transformModule(context: TransformationContext) {
         interface AsynchronousDependencies {
             aliasedModuleNames: Expression[];

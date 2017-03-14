@@ -2,7 +2,7 @@
 /// <reference path="../visitor.ts" />
 
 /*@internal*/
-namespace ts {
+namespace sc {
     type SuperContainer = ClassDeclaration | MethodDeclaration | GetAccessorDeclaration | SetAccessorDeclaration | ConstructorDeclaration;
 
     const enum ES2017SubstitutionFlags {

@@ -3,7 +3,7 @@
 /// <reference path="./destructuring.ts" />
 
 /*@internal*/
-namespace ts {
+namespace sc {
     /**
      * Indicates whether to emit type metadata in the new format.
      */

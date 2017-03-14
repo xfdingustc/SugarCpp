@@ -12,7 +12,7 @@
 /// <reference path="transformers/module/es2015.ts" />
 
 /* @internal */
-namespace ts {
+namespace sc {
     function getModuleTransformer(moduleKind: ModuleKind): TransformerFactory<SourceFile> {
         switch (moduleKind) {
             case ModuleKind.ES2015:

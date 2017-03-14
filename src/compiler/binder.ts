@@ -2,7 +2,7 @@
 /// <reference path="parser.ts"/>
 
 /* @internal */
-namespace ts {
+namespace sc {
     export const enum ModuleInstanceState {
         NonInstantiated = 0,
         Instantiated = 1,

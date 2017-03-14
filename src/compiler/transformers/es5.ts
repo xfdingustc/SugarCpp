@@ -2,7 +2,7 @@
 /// <reference path="../visitor.ts" />
 
 /*@internal*/
-namespace ts {
+namespace sc {
     /**
      * Transforms ES5 syntax into ES3 syntax.
      *

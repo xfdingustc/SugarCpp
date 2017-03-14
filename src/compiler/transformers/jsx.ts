@@ -3,7 +3,7 @@
 /// <reference path="./esnext.ts" />
 
 /*@internal*/
-namespace ts {
+namespace sc {
     export function transformJsx(context: TransformationContext) {
         const compilerOptions = context.getCompilerOptions();
 

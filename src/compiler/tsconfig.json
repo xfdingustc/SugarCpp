@@ -37,7 +37,7 @@
         "emitter.ts",
         "program.ts",
         "commandLineParser.ts",
-        "tsc.ts",
+        "scc.ts",
         "diagnosticInformationMap.generated.ts"
     ]
 }

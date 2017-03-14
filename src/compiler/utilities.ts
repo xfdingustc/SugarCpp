@@ -1,7 +1,7 @@
 /// <reference path="sys.ts" />
 
 /* @internal */
-namespace ts {
+namespace sc {
     export const externalHelpersModuleNameText = "tslib";
 
     export interface ReferencePathMatchResult {
@@ -3354,7 +3354,7 @@ namespace ts {
     const syntaxKindCache: string[] = [];
 
     export function formatSyntaxKind(kind: SyntaxKind): string {
-        const syntaxKindEnum = (<any>ts).SyntaxKind;
+        const syntaxKindEnum = (<any>sc).SyntaxKind;
         if (syntaxKindEnum) {
             const cached = syntaxKindCache[kind];
             if (cached !== undefined) {
@@ -4237,7 +4237,7 @@ namespace ts {
     }
 }
 
-namespace ts {
+namespace sc {
     export function getDefaultLibFileName(options: CompilerOptions): string {
         switch (options.target) {
             case ScriptTarget.ESNext:
@@ -4591,7 +4591,7 @@ namespace ts {
                 return false;
             }
             try {
-                ts.localizedDiagnosticMessages = JSON.parse(fileContents);
+                localizedDiagnosticMessages = JSON.parse(fileContents);
             }
             catch (e) {
                 if (errors) {

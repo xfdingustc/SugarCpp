@@ -2,7 +2,7 @@
 /// <reference path="binder.ts"/>
 
 /* @internal */
-namespace ts {
+namespace sc {
     const ambientModuleSymbolRegex = /^".+"$/;
 
     let nextSymbolId = 1;
@@ -1922,7 +1922,7 @@ namespace ts {
                             && !getDeclarationOfKind(symbolFromSymbolTable, SyntaxKind.ExportSpecifier)) {
                             if (!useOnlyExternalAliasing || // We can use any type of alias to get the name
                                 // Is this external alias, then use it to name
-                                ts.forEach(symbolFromSymbolTable.declarations, isExternalModuleImportEqualsDeclaration)) {
+                                sc.forEach(symbolFromSymbolTable.declarations, isExternalModuleImportEqualsDeclaration)) {
 
                                 const resolvedImportedSymbol = resolveAlias(symbolFromSymbolTable);
                                 if (isAccessible(symbolFromSymbolTable, resolveAlias(symbolFromSymbolTable))) {
@@ -2367,7 +2367,7 @@ namespace ts {
                         // If this is the last part of outputting the symbol, always output. The cases apply only to parent symbols.
                         endOfChain ||
                         // If a parent symbol is an external module, don't write it. (We prefer just `x` vs `"foo/bar".x`.)
-                        !(!parentSymbol && ts.forEach(symbol.declarations, hasExternalModuleSymbol)) &&
+                        !(!parentSymbol && sc.forEach(symbol.declarations, hasExternalModuleSymbol)) &&
                         // If a parent symbol is an anonymous type, don't write it.
                         !(symbol.flags & (SymbolFlags.TypeLiteral | SymbolFlags.ObjectLiteral))) {
 
@@ -5363,7 +5363,7 @@ namespace ts {
             if (node.initializer) {
                 const signatureDeclaration = <SignatureDeclaration>node.parent;
                 const signature = getSignatureFromDeclaration(signatureDeclaration);
-                const parameterIndex = ts.indexOf(signatureDeclaration.parameters, node);
+                const parameterIndex = sc.indexOf(signatureDeclaration.parameters, node);
                 Debug.assert(parameterIndex >= 0);
                 return parameterIndex >= signature.minArgumentCount;
             }
@@ -22132,7 +22132,7 @@ namespace ts {
                 return false;
             }
             if (!nodeCanBeDecorated(node)) {
-                if (node.kind === SyntaxKind.MethodDeclaration && !ts.nodeIsPresent((<MethodDeclaration>node).body)) {
+                if (node.kind === SyntaxKind.MethodDeclaration && !sc.nodeIsPresent((<MethodDeclaration>node).body)) {
                     return grammarErrorOnFirstToken(node, Diagnostics.A_decorator_can_only_decorate_a_method_implementation_not_an_overload);
                 }
                 else {

@@ -2,7 +2,7 @@
 /// <reference path="../visitor.ts" />
 
 /*@internal*/
-namespace ts {
+namespace sc {
     interface FlattenContext {
         context: TransformationContext;
         level: FlattenLevel;

@@ -1,7 +1,7 @@
 /// <reference path="checker.ts"/>
 
 /* @internal */
-namespace ts {
+namespace sc {
     export interface SourceMapWriter {
         /**
          * Initialize the SourceMapWriter for a new output file.
@@ -152,7 +152,7 @@ namespace ts {
 
             // Normalize source root and make sure it has trailing "/" so that it can be used to combine paths with the
             // relative paths of the sources list in the sourcemap
-            sourceMapData.sourceMapSourceRoot = ts.normalizeSlashes(sourceMapData.sourceMapSourceRoot);
+            sourceMapData.sourceMapSourceRoot = normalizeSlashes(sourceMapData.sourceMapSourceRoot);
             if (sourceMapData.sourceMapSourceRoot.length && sourceMapData.sourceMapSourceRoot.charCodeAt(sourceMapData.sourceMapSourceRoot.length - 1) !== CharacterCodes.slash) {
                 sourceMapData.sourceMapSourceRoot += directorySeparator;
             }

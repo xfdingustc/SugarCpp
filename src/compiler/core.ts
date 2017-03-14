@@ -1,13 +1,13 @@
 /// <reference path="types.ts"/>
 /// <reference path="performance.ts" />
 
-namespace ts {
+namespace sc {
     /** The version of the TypeScript compiler release */
     export const version = "2.3.0";
 }
 
 /* @internal */
-namespace ts {
+namespace sc {
     /**
      * Ternary values are defined such that
      * x & y is False if either x or y is False.
@@ -26,7 +26,7 @@ namespace ts {
     // More efficient to create a collator once and use its `compare` than to call `a.localeCompare(b)` many times.
     export const collator: { compare(a: string, b: string): number } = typeof Intl === "object" && typeof Intl.Collator === "function" ? new Intl.Collator(/*locales*/ undefined, { usage: "sort", sensitivity: "accent" }) : undefined;
     // Intl is missing in Safari, and node 0.10 treats "a" as greater than "B".
-    export const localeCompareIsCorrect = ts.collator && ts.collator.compare("a", "B") < 0;
+    export const localeCompareIsCorrect = sc.collator && sc.collator.compare("a", "B") < 0;
 
     /** Create a MapLike with good performance. */
     function createDictionaryObject<T>(): MapLike<T> {
@@ -1965,7 +1965,7 @@ namespace ts {
             // Iterate over each include base path and include unique base paths that are not a
             // subpath of an existing base path
             for (const includeBasePath of includeBasePaths) {
-                if (ts.every(basePaths, basePath => !containsPath(basePath, includeBasePath, path, !useCaseSensitiveFileNames))) {
+                if (sc.every(basePaths, basePath => !containsPath(basePath, includeBasePath, path, !useCaseSensitiveFileNames))) {
                     basePaths.push(includeBasePath);
                 }
             }

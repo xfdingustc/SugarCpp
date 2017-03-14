@@ -3,7 +3,7 @@
 /// <reference path="./destructuring.ts" />
 
 /*@internal*/
-namespace ts {
+namespace sc {
     const enum ES2015SubstitutionFlags {
         /** Enables substitutions for captured `this` */
         CapturedThis = 1 << 0,

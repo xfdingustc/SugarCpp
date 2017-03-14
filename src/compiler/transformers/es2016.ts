@@ -2,7 +2,7 @@
 /// <reference path="../visitor.ts" />
 
 /*@internal*/
-namespace ts {
+namespace sc {
     export function transformES2016(context: TransformationContext) {
         const { hoistVariableDeclaration } = context;
 

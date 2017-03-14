@@ -1,7 +1,7 @@
 /// <reference path="program.ts"/>
 /// <reference path="commandLineParser.ts"/>
 
-namespace ts {
+namespace sc {
     export interface SourceFile {
         fileWatcher?: FileWatcher;
     }
@@ -57,7 +57,7 @@ namespace ts {
     }
 
     function reportDiagnosticSimply(diagnostic: Diagnostic, host: FormatDiagnosticsHost): void {
-        sys.write(ts.formatDiagnostics([diagnostic], host));
+        sys.write(sc.formatDiagnostics([diagnostic], host));
     }
 
     const redForegroundEscapeSequence = "\u001b[91m";
@@ -277,7 +277,7 @@ namespace ts {
                 configFileWatcher = sys.watchFile(configFileName, configFileChanged);
             }
             if (sys.watchDirectory && configFileName) {
-                const directory = ts.getDirectoryPath(configFileName);
+                const directory = getDirectoryPath(configFileName);
                 directoryWatcher = sys.watchDirectory(
                     // When the configFileName is just "tsconfig.json", the watched directory should be
                     // the current directory; if there is a given "project" parameter, then the configFileName
@@ -329,7 +329,7 @@ namespace ts {
                 }
 
                 if (!directoryWatcher && sys.watchDirectory && configFileName) {
-                    const directory = ts.getDirectoryPath(configFileName);
+                    const directory = getDirectoryPath(configFileName);
                     directoryWatcher = sys.watchDirectory(
                         // When the configFileName is just "tsconfig.json", the watched directory should be
                         // the current directory; if there is a given "project" parameter, then the configFileName
@@ -439,7 +439,7 @@ namespace ts {
         }
 
         function watchedDirectoryChanged(fileName: string) {
-            if (fileName && !ts.isSupportedSourceFileName(fileName, compilerOptions)) {
+            if (fileName && !isSupportedSourceFileName(fileName, compilerOptions)) {
                 return;
             }
 
@@ -459,8 +459,8 @@ namespace ts {
 
         function directoryChangeHandler() {
             const parsedCommandLine = parseConfigFile();
-            const newFileNames = ts.map(parsedCommandLine.fileNames, compilerHost.getCanonicalFileName);
-            const canonicalRootFileNames = ts.map(rootFileNames, compilerHost.getCanonicalFileName);
+            const newFileNames = map(parsedCommandLine.fileNames, compilerHost.getCanonicalFileName);
+            const canonicalRootFileNames = map(rootFileNames, compilerHost.getCanonicalFileName);
 
             // We check if the project file list has changed. If so, we just throw away the old program and start fresh.
             if (!arrayIsEqualTo(newFileNames && newFileNames.sort(), canonicalRootFileNames && canonicalRootFileNames.sort())) {
@@ -615,7 +615,7 @@ namespace ts {
     }
 
     function printVersion() {
-        sys.write(getDiagnosticText(Diagnostics.Version_0, ts.version) + sys.newLine);
+        sys.write(getDiagnosticText(Diagnostics.Version_0, version) + sys.newLine);
     }
 
     function printHelp() {
@@ -746,8 +746,8 @@ namespace ts {
     }
 }
 
-if (ts.sys.tryEnableSourceMapsForHost && /^development$/i.test(ts.sys.getEnvironmentVariable("NODE_ENV"))) {
-    ts.sys.tryEnableSourceMapsForHost();
+if (sc.sys.tryEnableSourceMapsForHost && /^development$/i.test(sc.sys.getEnvironmentVariable("NODE_ENV"))) {
+    sc.sys.tryEnableSourceMapsForHost();
 }
 
-ts.executeCommandLine(ts.sys.args);
+sc.executeCommandLine(sc.sys.args);

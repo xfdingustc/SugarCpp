@@ -1,7 +1,7 @@
 /// <reference path="core.ts"/>
 /// <reference path="utilities.ts"/>
 
-namespace ts {
+namespace sc {
     function createSynthesizedNode(kind: SyntaxKind): Node {
         const node = createNode(kind, -1, -1);
         node.flags |= NodeFlags.Synthesized;
@@ -2096,7 +2096,7 @@ namespace ts {
 }
 
 /* @internal */
-namespace ts {
+namespace sc {
 
     // Compound nodes
 

@@ -1,7 +1,7 @@
 /// <reference path="checker.ts"/>
 
 /* @internal */
-namespace ts {
+namespace sc {
     interface ModuleElementDeclarationEmitInfo {
         node: Node;
         outputPos: number;

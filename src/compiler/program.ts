@@ -2,7 +2,7 @@
 /// <reference path="emitter.ts" />
 /// <reference path="core.ts" />
 
-namespace ts {
+namespace sc {
     const emptyArray: any[] = [];
 
     export function findConfigFile(searchPath: string, fileExists: (fileName: string) => boolean, configName = "tsconfig.json"): string {
@@ -1114,7 +1114,7 @@ namespace ts {
             return runWithCancellationToken(() => {
                 const resolver = getDiagnosticsProducingTypeChecker().getEmitResolver(sourceFile, cancellationToken);
                 // Don't actually write any files since we're just getting diagnostics.
-                return ts.getDeclarationDiagnostics(getEmitHost(noop), resolver, sourceFile);
+                return sc.getDeclarationDiagnostics(getEmitHost(noop), resolver, sourceFile);
             });
         }
 

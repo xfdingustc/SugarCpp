@@ -4,7 +4,7 @@
 /// <reference path="sourcemap.ts" />
 /// <reference path="comments.ts" />
 
-namespace ts {
+namespace sc {
     const delimiters = createDelimiterMap();
     const brackets = createBracketsMap();
 

@@ -121,7 +121,7 @@
 //  .mark END                     | case END:
 
 /*@internal*/
-namespace ts {
+namespace sc {
     type Label = number;
 
     const enum OpCode {

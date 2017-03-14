@@ -2,7 +2,7 @@
 /// <reference path="scanner.ts"/>
 /// <reference path="factory.ts"/>
 
-namespace ts {
+namespace sc {
     let NodeConstructor: new (kind: SyntaxKind, pos: number, end: number) => Node;
     let TokenConstructor: new (kind: SyntaxKind, pos: number, end: number) => Node;
     let IdentifierConstructor: new (kind: SyntaxKind, pos: number, end: number) => Node;

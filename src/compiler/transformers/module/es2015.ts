@@ -2,7 +2,7 @@
 /// <reference path="../../visitor.ts" />
 
 /*@internal*/
-namespace ts {
+namespace sc {
     export function transformES2015Module(context: TransformationContext) {
         const compilerOptions = context.getCompilerOptions();
         const previousOnEmitNode = context.onEmitNode;

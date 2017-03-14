@@ -4,7 +4,7 @@
 /// <reference path="diagnosticInformationMap.generated.ts"/>
 /// <reference path="scanner.ts"/>
 
-namespace ts {
+namespace sc {
     /* @internal */
     export const compileOnSaveCommandLineOption: CommandLineOption = { name: "compileOnSave", type: "boolean" };
     /* @internal */
@@ -784,7 +784,7 @@ namespace ts {
         }
 
         function serializeCompilerOptions(options: CompilerOptions): MapLike<CompilerOptionsValue> {
-            const result: ts.MapLike<CompilerOptionsValue> = {};
+            const result: sc.MapLike<CompilerOptionsValue> = {};
             const optionsNameMap = getOptionNameMap().optionNameMap;
 
             for (const name in options) {
@@ -1324,7 +1324,7 @@ namespace ts {
         //  /a/b/a?z    - Watch /a/b directly to catch any new file matching a?z
         const rawExcludeRegex = getRegularExpressionForWildcard(exclude, path, "exclude");
         const excludeRegex = rawExcludeRegex && new RegExp(rawExcludeRegex, useCaseSensitiveFileNames ? "" : "i");
-        const wildcardDirectories: ts.MapLike<WatchDirectoryFlags> = {};
+        const wildcardDirectories: sc.MapLike<WatchDirectoryFlags> = {};
         if (include !== undefined) {
             const recursiveKeys: string[] = [];
             for (const file of include) {

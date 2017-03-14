@@ -1,5 +1,5 @@
 /*@internal*/
-namespace ts {
+namespace sc {
     declare const performance: { now?(): number } | undefined;
     /** Gets a timestamp with (at least) ms resolution */
     export const timestamp = typeof performance !== "undefined" && performance.now ? () => performance.now() : Date.now ? Date.now : () => +(new Date());
@@ -7,7 +7,7 @@ namespace ts {
 
 /*@internal*/
 /** Performance measurements for the compiler. */
-namespace ts.performance {
+namespace sc.performance {
     declare const onProfilerEvent: { (markName: string): void; profiler: boolean; };
 
     const profilerEvent = typeof onProfilerEvent === "function" && onProfilerEvent.profiler === true

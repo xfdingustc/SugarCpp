@@ -1,7 +1,7 @@
 /// <reference path="sourcemap.ts" />
 
 /* @internal */
-namespace ts {
+namespace sc {
     export interface CommentWriter {
         reset(): void;
         setSourceFile(sourceFile: SourceFile): void;

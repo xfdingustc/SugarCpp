@@ -3,7 +3,7 @@
 /// <reference path="es2017.ts" />
 
 /*@internal*/
-namespace ts {
+namespace sc {
     const enum ESNextSubstitutionFlags {
         /** Enables substitutions for async methods with `super` calls. */
         AsyncMethodsWithSuper = 1 << 0

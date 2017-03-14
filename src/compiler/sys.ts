@@ -3,7 +3,7 @@
 declare function setTimeout(handler: (...args: any[]) => void, timeout: number): any;
 declare function clearTimeout(handle: any): void;
 
-namespace ts {
+namespace sc {
     export type FileWatcherCallback = (fileName: string, removed?: boolean) => void;
     export type DirectoryWatcherCallback = (fileName: string) => void;
     export interface WatchedFile {
@@ -316,7 +316,7 @@ namespace ts {
                     // When files are deleted from disk, the triggered "rename" event would have a relativefileName of "undefined"
                     const fileName = typeof relativeFileName !== "string"
                         ? undefined
-                        : ts.getNormalizedAbsolutePath(relativeFileName, baseDirPath);
+                        : sc.getNormalizedAbsolutePath(relativeFileName, baseDirPath);
                     // Some applications save a working file via rename operations
                     if ((eventName === "change" || eventName === "rename")) {
                         const callbacks = fileWatcherCallbacks.get(fileName);
