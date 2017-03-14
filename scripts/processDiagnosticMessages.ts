@@ -1,83 +1,86 @@
 /// <reference path="../src/compiler/sys.ts" />
 
 interface DiagnosticDetails {
-  category: string;
-  code: number;
+    category: string;
+    code: number;
+    isEarly?: boolean;
 }
 
 interface InputDiagnosticMessageTable {
-  [msg: string]: DiagnosticDetails;
+    [msg: string]: DiagnosticDetails;
 }
 
 function main(): void {
-  var sys = sc.sys;
-  if (sys.args.length < 1) {
-    sys.write("Usage:" + sys.newLine);
-    sys.write("\tnode processDiagnosticMessage.js <diagnostic-json-input-file>" + sys.newLine);
-    return;
-  }
+    var sys = ts.sys;
+    if (sys.args.length < 1) {
+        sys.write("Usage:" + sys.newLine)
+        sys.write("\tnode processDiagnosticMessages.js <diagnostic-json-input-file>" + sys.newLine);
+        return;
+    }
 
-  function writeFile(fileName: string, contents: string) {
-    // TODO: Fix path joining
-    var inputDirectory = inputFilePath.substr(0,inputFilePath.lastIndexOf("/"));
-    var fileOutputPath = inputDirectory + "/" + fileName;
-    sys.writeFile(fileOutputPath, contents);
-  }
+    function writeFile(fileName: string, contents: string) {
+        // TODO: Fix path joining
+        var inputDirectory = inputFilePath.substr(0,inputFilePath.lastIndexOf("/"));
+        var fileOutputPath = inputDirectory + "/" + fileName;
+        sys.writeFile(fileOutputPath, contents);
+    }
 
-  var inputFilePath = sys.args[0].replace(/\\/g, "/");
-  var inputStr = sys.readFile(inputFilePath);
+    var inputFilePath = sys.args[0].replace(/\\/g, "/");
+    var inputStr = sys.readFile(inputFilePath);
 
-  var diagnosticMessages: InputDiagnosticMessageTable = JSON.parse(inputStr);
-  var names = Utilities.getObjectKeys(diagnosticMessages);
-  var nameMap = buildUniqueNameMap(names);
+    var diagnosticMessages: InputDiagnosticMessageTable = JSON.parse(inputStr);
 
-  var infoFileOutput = buildInfoFileOutput(diagnosticMessages, nameMap);
-  checkForUniqueCodes(names, diagnosticMessages);
-  writeFile("diagnosticInformationMap.generated.ts", infoFileOutput);
+    var names = Utilities.getObjectKeys(diagnosticMessages);
+    var nameMap = buildUniqueNameMap(names);
 
-  var messageOutput = buildDiagnosticMessageOutput(diagnosticMessages, nameMap);
-  writeFile("diagnosticMessages.generated.json", messageOutput);
+    var infoFileOutput = buildInfoFileOutput(diagnosticMessages, nameMap);
+    checkForUniqueCodes(names, diagnosticMessages);
+    writeFile("diagnosticInformationMap.generated.ts", infoFileOutput);
+
+    var messageOutput = buildDiagnosticMessageOutput(diagnosticMessages, nameMap);
+    writeFile("diagnosticMessages.generated.json", messageOutput);
 }
 
 function checkForUniqueCodes(messages: string[], diagnosticTable: InputDiagnosticMessageTable) {
-  const originalMessageForCode: string[] = [];
-  let numConflicts = 0;
+    const originalMessageForCode: string[] = [];
+    let numConflicts = 0;
 
-  for (const currentMessage of messages) {
-    const code = diagnosticTable[currentMessage].code;
+    for (const currentMessage of messages) {
+        const code = diagnosticTable[currentMessage].code;
 
-    if (code in originalMessageForCode) {
-      const originalMessage = originalMessageForCode[code];
-      sc.sys.write("\x1b[91m"); // High intensity red.
-      sc.sys.write("Error");
-      sc.sys.write("\x1b[0m");  // Reset formatting.
-      sc.sys.write(`: Diagnostic code '${code}' conflicts between "${originalMessage}" and "${currentMessage}".`);
-      sc.sys.write(sc.sys.newLine + sc.sys.newLine);
+        if (code in originalMessageForCode) {
+            const originalMessage = originalMessageForCode[code];
+            ts.sys.write("\x1b[91m"); // High intensity red.
+            ts.sys.write("Error");
+            ts.sys.write("\x1b[0m");  // Reset formatting.
+            ts.sys.write(`: Diagnostic code '${code}' conflicts between "${originalMessage}" and "${currentMessage}".`);
+            ts.sys.write(ts.sys.newLine + ts.sys.newLine);
 
-      numConflicts++;
-    } else {
-      originalMessageForCode[code] = currentMessage;
+            numConflicts++;
+        }
+        else {
+            originalMessageForCode[code] = currentMessage;
+        }
     }
-  }
 
-  if (numConflicts > 0) {
-    throw new Error(`Found ${numConflicts} conflict(s) in diagnostic codes.`);
-  }
+    if (numConflicts > 0) {
+        throw new Error(`Found ${numConflicts} conflict(s) in diagnostic codes.`);
+    }
 }
 
-function buildUniqueNameMap(names: string[]): sc.Map<string> {
-  var nameMap = sc.createMap<string>();
+function buildUniqueNameMap(names: string[]): ts.Map<string> {
+    var nameMap = ts.createMap<string>();
 
-  var uniqueNames = NameGenerator.ensureUniqueness(names, /* isCaseSensitive */ false, /* isFixed */ undefined);
+    var uniqueNames = NameGenerator.ensureUniqueness(names, /* isCaseSensitive */ false, /* isFixed */ undefined);
 
-  for (var i = 0; i < names.length; i++) {
-    nameMap.set(names[i], uniqueNames[i]);
-  }
+    for (var i = 0; i < names.length; i++) {
+        nameMap.set(names[i], uniqueNames[i]);
+    }
 
-  return nameMap;
+    return nameMap;
 }
 
-function buildInfoFileOutput(messageTable: InputDiagnosticMessageTable, nameMap: sc.Map<string>): string {
+function buildInfoFileOutput(messageTable: InputDiagnosticMessageTable, nameMap: ts.Map<string>): string {
     var result =
         '// <auto-generated />\r\n' +
         '/// <reference path="types.ts" />\r\n' +
@@ -104,7 +107,7 @@ function buildInfoFileOutput(messageTable: InputDiagnosticMessageTable, nameMap:
     return result;
 }
 
-function buildDiagnosticMessageOutput(messageTable: InputDiagnosticMessageTable, nameMap: sc.Map<string>): string {
+function buildDiagnosticMessageOutput(messageTable: InputDiagnosticMessageTable, nameMap: ts.Map<string>): string {
     var result =
         '{';
     var names = Utilities.getObjectKeys(messageTable);
@@ -237,4 +240,5 @@ module Utilities {
         return result;
     }
 }
+
 main();
