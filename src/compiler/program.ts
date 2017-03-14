@@ -1,6 +1,7 @@
 /// <reference path="sys.ts" />
 /// <reference path="core.ts" />
 /// <reference path="utilities.ts" />
+/// <reference path="parser.ts" />
 
 namespace sc {
   export function createProgram(rootNames: string[]): Program  {
@@ -39,12 +40,34 @@ namespace sc {
 
 
     function getSyntacticDiagnosticsForFile(sourceFile: SourceFile): Diagnostic[] {
-        if (isSourceFileCpp(sourceFile)) {
+      if (isSourceFileCpp(sourceFile)) {
+      }
 
-        }
-
-        return sourceFile.parseDiagnostics;
+      return sourceFile.parseDiagnostics;
     }
 
+    
+
+  }
+
+  export function createCompilerHost(setParentNodes?: boolean): CompilerHost {
+    function getSourceFile(fileName: string, onError?: (message: string) => void): SourceFile {
+      let text: string;
+      try {
+        text = sys.readFile(fileName);
+      }
+      catch (e) {
+        if (onError) {
+
+        }
+        text = "";
+      }
+      sys.write(text);
+      return text !== undefined ? createSourceFile(fileName, text, setParentNodes) : undefined;
+    }      
+
+    return {
+      getSourceFile
+    };
   }
 }

@@ -4,12 +4,20 @@
 namespace sc {
   export function executeCommandLine(args: string[]): void {
     const commandLine = parseCommandLine(args);
+    let cachedProgram: Program;
+    let compilerHost: CompilerHost;
+
     let rootfileNames: string[];
     
     performCompilation();
 
     function performCompilation() {
-      rootfileNames = commandLine.fileNames;
+      if (!cachedProgram) {
+        rootfileNames = commandLine.fileNames;
+
+        compilerHost = createCompilerHost();
+      }
+      
       compile(rootfileNames);
     }
     
