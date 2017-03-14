@@ -2014,16 +2014,16 @@ namespace ts {
     /**
      *  List of supported extensions in order of file resolution precedence.
      */
-    export const supportedTypeScriptExtensions = [".ts", ".tsx", ".d.ts"];
+    export const supportedSugarCppExtensions = [".d.ts", ".scp"];
     /** Must have ".d.ts" first because if ".ts" goes first, that will be detected as the extension instead of ".d.ts". */
-    export const supportedTypescriptExtensionsForExtractExtension = [".d.ts", ".ts", ".tsx"];
+    export const supportedSugarCppExtensionsForExtractExtension = [".d.ts", "scp"];
     export const supportedJavascriptExtensions = [".js", ".jsx"];
-    const allSupportedExtensions = supportedTypeScriptExtensions.concat(supportedJavascriptExtensions);
+    const allSupportedExtensions = supportedSugarCppExtensions.concat(supportedJavascriptExtensions);
 
     export function getSupportedExtensions(options?: CompilerOptions, extraFileExtensions?: JsFileExtensionInfo[]): string[] {
         const needAllExtensions = options && options.allowJs;
         if (!extraFileExtensions || extraFileExtensions.length === 0 || !needAllExtensions) {
-            return needAllExtensions ? allSupportedExtensions : supportedTypeScriptExtensions;
+            return needAllExtensions ? allSupportedExtensions : supportedSugarCppExtensions;
         }
         const extensions = allSupportedExtensions.slice(0);
         for (const extInfo of extraFileExtensions) {
@@ -2039,7 +2039,7 @@ namespace ts {
     }
 
     export function hasTypeScriptFileExtension(fileName: string) {
-        return forEach(supportedTypeScriptExtensions, extension => fileExtensionIs(fileName, extension));
+        return forEach(supportedSugarCppExtensions, extension => fileExtensionIs(fileName, extension));
     }
 
     export function isSupportedSourceFileName(fileName: string, compilerOptions?: CompilerOptions, extraFileExtensions?: JsFileExtensionInfo[]) {

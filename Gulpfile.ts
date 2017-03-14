@@ -193,7 +193,9 @@ gulp.task(builtLocalCompiler, false, [serviceFile], () => {
     const localCompilerProject = tsc.createProject("src/compiler/tsconfig.json", getCompilerSettings({}, false));
     return localCompilerProject.src()
         .pipe(newer(builtLocalCompiler))
+        .pipe(sourcemaps.init())
         .pipe(localCompilerProject())
+        .pipe(sourcemaps.write("."))
         .pipe(gulp.dest(builtLocalDirectory));
 });
 

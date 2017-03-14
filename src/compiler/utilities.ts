@@ -3182,8 +3182,8 @@ namespace ts {
     }
 
     /** Return ".ts", ".d.ts", or ".tsx", if that is the extension. */
-    export function tryExtractTypeScriptExtension(fileName: string): string | undefined {
-        return find(supportedTypescriptExtensionsForExtractExtension, extension => fileExtensionIs(fileName, extension));
+    export function tryExtractSugarCppExtension(fileName: string): string | undefined {
+        return find(supportedSugarCppExtensionsForExtractExtension, extension => fileExtensionIs(fileName, extension));
     }
     /**
      * Replace each instance of non-ascii characters by one, two, three, or four escape sequences
