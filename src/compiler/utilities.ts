@@ -4238,20 +4238,6 @@ namespace sc {
 }
 
 namespace sc {
-    export function getDefaultLibFileName(options: CompilerOptions): string {
-        switch (options.target) {
-            case ScriptTarget.ESNext:
-            case ScriptTarget.ES2017:
-                return "lib.es2017.d.ts";
-            case ScriptTarget.ES2016:
-                return "lib.es2016.d.ts";
-            case ScriptTarget.ES2015:
-                return "lib.es6.d.ts";
-            default:
-                return "lib.d.ts";
-        }
-    }
-
     export function textSpanEnd(span: TextSpan) {
         return span.start + span.length;
     }

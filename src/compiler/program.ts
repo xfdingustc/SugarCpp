@@ -193,7 +193,6 @@ namespace sc {
         return {
             getSourceFile,
             getDefaultLibLocation,
-            getDefaultLibFileName: options => combinePaths(getDefaultLibLocation(), getDefaultLibFileName(options)),
             writeFile,
             getCurrentDirectory: memoize(() => sys.getCurrentDirectory()),
             useCaseSensitiveFileNames: () => sys.useCaseSensitiveFileNames,
