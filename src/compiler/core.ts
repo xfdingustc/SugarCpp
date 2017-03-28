@@ -603,7 +603,6 @@ namespace sc {
             (oldOptions.moduleResolution !== newOptions.moduleResolution) ||
             (oldOptions.noResolve !== newOptions.noResolve) ||
             (oldOptions.target !== newOptions.target) ||
-            (oldOptions.noLib !== newOptions.noLib) ||
             (oldOptions.jsx !== newOptions.jsx) ||
             (oldOptions.allowJs !== newOptions.allowJs) ||
             (oldOptions.rootDir !== newOptions.rootDir) ||

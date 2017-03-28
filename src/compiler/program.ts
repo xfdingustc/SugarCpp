@@ -330,7 +330,6 @@ namespace sc {
 
         host = host || createCompilerHost(options);
 
-        let skipDefaultLib = options.noLib;
         const programDiagnostics = createDiagnosticCollection();
         const currentDirectory = host.getCurrentDirectory();
         const supportedExtensions = getSupportedExtensions(options);
@@ -387,23 +386,7 @@ namespace sc {
                 }
             }
 
-            // Do not process the default library if:
-            //  - The '--noLib' flag is used.
-            //  - A 'no-default-lib' reference comment is encountered in
-            //      processing the root files.
-            if (!skipDefaultLib) {
-                // If '--lib' is not specified, include default library file according to '--target'
-                // otherwise, using options specified in '--lib' instead of '--target' default library file
-                if (!options.lib) {
-                    processRootFile(host.getDefaultLibFileName(options), /*isDefaultLib*/ true);
-                }
-                else {
-                    const libDirectory = host.getDefaultLibLocation ? host.getDefaultLibLocation() : getDirectoryPath(host.getDefaultLibFileName(options));
-                    forEach(options.lib, libFileName => {
-                        processRootFile(combinePaths(libDirectory, libFileName), /*isDefaultLib*/ true);
-                    });
-                }
-            }
+            
         }
 
         // unconditionally set moduleResolutionCache to undefined to avoid unnecessary leaks
@@ -1391,7 +1374,6 @@ namespace sc {
                     }
                 }
 
-                skipDefaultLib = skipDefaultLib || file.hasNoDefaultLib;
 
                 if (!options.noResolve) {
                     processReferencedFiles(file, isDefaultLib);
@@ -1668,7 +1650,7 @@ namespace sc {
                 }
             }
 
-            if (options.lib && options.noLib) {
+            if (options.lib) {
                 programDiagnostics.add(createCompilerDiagnostic(Diagnostics.Option_0_cannot_be_specified_with_option_1, "lib", "noLib"));
             }
 

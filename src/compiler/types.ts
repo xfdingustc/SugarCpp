@@ -3352,7 +3352,6 @@ namespace sc {
         noUnusedLocals?: boolean;
         noUnusedParameters?: boolean;
         noImplicitUseStrict?: boolean;
-        noLib?: boolean;
         noResolve?: boolean;
         out?: string;
         outDir?: string;
