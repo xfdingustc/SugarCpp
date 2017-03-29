@@ -8,17 +8,6 @@
 
 /* @internal */
 namespace sc {
-    function getModuleTransformer(moduleKind: ModuleKind): TransformerFactory<SourceFile> {
-        switch (moduleKind) {
-            case ModuleKind.ES2015:
-                return transformES2015Module;
-            case ModuleKind.System:
-                return transformSystemModule;
-            default:
-                return transformModule;
-        }
-    }
-
     const enum TransformationState {
         Uninitialized,
         Initialized,
@@ -29,30 +18,6 @@ namespace sc {
     const enum SyntaxKindFeatureFlags {
         Substitution = 1 << 0,
         EmitNotifications = 1 << 1,
-    }
-
-    export function getTransformers(compilerOptions: CompilerOptions, customTransformers?: CustomTransformers) {
-        const jsx = compilerOptions.jsx;
-        const languageVersion = getEmitScriptTarget(compilerOptions);
-        const moduleKind = getEmitModuleKind(compilerOptions);
-        const transformers: TransformerFactory<SourceFile>[] = [];
-
-        addRange(transformers, customTransformers && customTransformers.before);
-
-        transformers.push(transformTypeScript);
-
-
-        transformers.push(getModuleTransformer(moduleKind));
-
-        // The ES5 transformer is last so that it can substitute expressions like `exports.default`
-        // for ES3.
-        if (languageVersion < ScriptTarget.ES5) {
-            transformers.push(transformES5);
-        }
-
-        addRange(transformers, customTransformers && customTransformers.after);
-
-        return transformers;
     }
 
     /**

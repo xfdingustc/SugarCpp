@@ -794,13 +794,12 @@ namespace sc {
 
             performance.mark("beforeEmit");
 
-            const transformers = emitOnlyDtsFiles ? [] : getTransformers(options, customTransformers);
+            //const transformers = emitOnlyDtsFiles ? [] : getTransformers(options, customTransformers);
             const emitResult = emitFiles(
                 emitResolver,
                 getEmitHost(writeFileCallback),
                 sourceFile,
-                emitOnlyDtsFiles,
-                transformers);
+                emitOnlyDtsFiles);
 
             performance.mark("afterEmit");
             performance.measure("Emit", "beforeEmit", "afterEmit");
