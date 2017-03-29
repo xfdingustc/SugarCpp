@@ -1,7 +1,6 @@
 /// <reference path="visitor.ts" />
 /// <reference path="transformers/ts.ts" />
 /// <reference path="transformers/generators.ts" />
-/// <reference path="transformers/es5.ts" />
 /// <reference path="transformers/module/module.ts" />
 /// <reference path="transformers/module/system.ts" />
 
