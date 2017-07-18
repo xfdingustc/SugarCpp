@@ -1826,7 +1826,7 @@ namespace sc {
             }
             else {
                 // Get the declaration file path
-                forEachEmittedFile(host, getDeclFileName, referencedFile, emitOnlyDtsFiles);
+                forEachEmittedFile(host, getDeclFileName, referencedFile);
             }
 
             if (declFileName) {
@@ -1849,7 +1849,7 @@ namespace sc {
                 }
 
                 Debug.assert(!!emitFileNames.declarationFilePath || isSourceFileJavaScript(referencedFile), "Declaration file is not present only for javascript files");
-                declFileName = emitFileNames.declarationFilePath || emitFileNames.jsFilePath;
+                declFileName = emitFileNames.declarationFilePath || emitFileNames.cppFilePath;
                 addedBundledEmitReference = isBundledEmit;
             }
         }

@@ -51,7 +51,7 @@ namespace sc {
 
         // Emit each output file
         performance.mark("beforePrint");
-        forEachEmittedFile(host, emitSourceFileOrBundle, transform.transformed, emitOnlyDtsFiles);
+        forEachEmittedFile(host, emitSourceFileOrBundle, transform.transformed);
         performance.measure("printTime", "beforePrint");
 
         // Clean up emit nodes on parse tree
@@ -64,12 +64,11 @@ namespace sc {
             sourceMaps: sourceMapDataList
         };
 
-        function emitSourceFileOrBundle({ jsFilePath, sourceMapFilePath, declarationFilePath }: EmitFileNames, sourceFileOrBundle: SourceFile | Bundle) {
+        function emitSourceFileOrBundle({ hppFilePath, cppFilePath, sourceMapFilePath, declarationFilePath }: EmitFileNames, sourceFileOrBundle: SourceFile | Bundle) {
             // Make sure not to write js file and source map file if any of them cannot be written
-            if (!host.isEmitBlocked(jsFilePath) && !compilerOptions.noEmit) {
-                if (!emitOnlyDtsFiles) {
-                    printSourceFileOrBundle(jsFilePath, sourceMapFilePath, sourceFileOrBundle);
-                }
+            if (!host.isEmitBlocked(cppFilePath) && !compilerOptions.noEmit) {
+                printSourceFileOrBundle(hppFilePath, sourceMapFilePath, sourceFileOrBundle);
+                printSourceFileOrBundle(cppFilePath, sourceMapFilePath, sourceFileOrBundle);
             }
             else {
                 emitSkipped = true;
@@ -80,9 +79,9 @@ namespace sc {
             }
 
             if (!emitSkipped && emittedFilesList) {
-                if (!emitOnlyDtsFiles) {
-                    emittedFilesList.push(jsFilePath);
-                }
+                emittedFilesList.push(hppFilePath);
+                emittedFilesList.push(cppFilePath);
+
                 if (sourceMapFilePath) {
                     emittedFilesList.push(sourceMapFilePath);
                 }

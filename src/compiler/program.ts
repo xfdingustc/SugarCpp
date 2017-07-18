@@ -1729,7 +1729,7 @@ namespace sc {
                 const emitHost = getEmitHost();
                 const emitFilesSeen = createFileMap<boolean>(!host.useCaseSensitiveFileNames() ? key => key.toLocaleLowerCase() : undefined);
                 forEachEmittedFile(emitHost, (emitFileNames) => {
-                    verifyEmitFilePath(emitFileNames.jsFilePath, emitFilesSeen);
+                    verifyEmitFilePath(emitFileNames.cppFilePath, emitFilesSeen);
                     verifyEmitFilePath(emitFileNames.declarationFilePath, emitFilesSeen);
                 });
             }

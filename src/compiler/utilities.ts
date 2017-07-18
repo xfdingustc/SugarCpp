@@ -2616,7 +2616,8 @@ namespace sc {
     }
 
     export interface EmitFileNames {
-        jsFilePath: string;
+        hppFilePath: string;
+        cppFilePath: string;
         sourceMapFilePath: string;
         declarationFilePath: string;
     }
@@ -2661,28 +2662,21 @@ namespace sc {
      *   Else, calls `getSourceFilesToEmit` with the (optional) target source file to determine the list of source files to emit.
      */
     export function forEachEmittedFile(
-        host: EmitHost, action: (emitFileNames: EmitFileNames, sourceFileOrBundle: SourceFile | Bundle, emitOnlyDtsFiles: boolean) => void,
+        host: EmitHost, action: (emitFileNames: EmitFileNames, sourceFileOrBundle: SourceFile | Bundle) => void,
         sourceFilesOrTargetSourceFile?: SourceFile[] | SourceFile,
-        emitOnlyDtsFiles?: boolean) {
+        ) {
 
         const sourceFiles = isArray(sourceFilesOrTargetSourceFile) ? sourceFilesOrTargetSourceFile : getSourceFilesToEmit(host, sourceFilesOrTargetSourceFile);
         const options = host.getCompilerOptions();
-        if (options.outFile || options.out) {
-            if (sourceFiles.length) {
-                const jsFilePath = options.outFile || options.out;
-                const sourceMapFilePath = getSourceMapFilePath(jsFilePath, options);
-                const declarationFilePath = options.declaration ? removeFileExtension(jsFilePath) + ".d.ts" : undefined;
-                action({ jsFilePath, sourceMapFilePath, declarationFilePath }, createBundle(sourceFiles), emitOnlyDtsFiles);
-            }
+
+        for (const sourceFile of sourceFiles) {
+            const hppFilePath = getOwnEmitOutputFilePath(sourceFile, host, getHeaderOutputExtension());
+            const cppFilePath = getOwnEmitOutputFilePath(sourceFile, host, getSourceOutputExtension());
+            const sourceMapFilePath = getSourceMapFilePath(cppFilePath, options);
+            const declarationFilePath = !isSourceFileJavaScript(sourceFile) && (options.declaration) ? getDeclarationEmitOutputFilePath(sourceFile, host) : undefined;
+            action({hppFilePath, cppFilePath, sourceMapFilePath, declarationFilePath }, sourceFile);
         }
-        else {
-            for (const sourceFile of sourceFiles) {
-                const jsFilePath = getOwnEmitOutputFilePath(sourceFile, host, getOutputExtension(sourceFile, options));
-                const sourceMapFilePath = getSourceMapFilePath(jsFilePath, options);
-                const declarationFilePath = !isSourceFileJavaScript(sourceFile) && (emitOnlyDtsFiles || options.declaration) ? getDeclarationEmitOutputFilePath(sourceFile, host) : undefined;
-                action({ jsFilePath, sourceMapFilePath, declarationFilePath }, sourceFile, emitOnlyDtsFiles);
-            }
-        }
+
     }
 
     function getSourceMapFilePath(jsFilePath: string, options: CompilerOptions) {
@@ -2690,8 +2684,12 @@ namespace sc {
     }
 
 
-    function getOutputExtension(sourceFile: SourceFile, options: CompilerOptions): string {
+    function getSourceOutputExtension(): string {
         return ".cpp";
+    }
+
+    function getHeaderOutputExtension(): string {
+        return ".hpp"
     }
 
     export function getSourceFilePathInNewDir(sourceFile: SourceFile, host: EmitHost, newDirPath: string) {
