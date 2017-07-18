@@ -2689,22 +2689,8 @@ namespace sc {
         return options.sourceMap ? jsFilePath + ".map" : undefined;
     }
 
-    // JavaScript files are always LanguageVariant.JSX, as JSX syntax is allowed in .js files also.
-    // So for JavaScript files, '.jsx' is only emitted if the input was '.jsx', and JsxEmit.Preserve.
-    // For TypeScript, the only time to emit with a '.jsx' extension, is on JSX input, and JsxEmit.Preserve
     function getOutputExtension(sourceFile: SourceFile, options: CompilerOptions): string {
-        if (options.jsx === JsxEmit.Preserve) {
-            if (isSourceFileJavaScript(sourceFile)) {
-                if (fileExtensionIs(sourceFile.fileName, ".jsx")) {
-                    return ".jsx";
-                }
-            }
-            else if (sourceFile.languageVariant === LanguageVariant.JSX) {
-                // TypeScript source file preserving JSX syntax
-                return ".jsx";
-            }
-        }
-        return ".js";
+        return ".cpp";
     }
 
     export function getSourceFilePathInNewDir(sourceFile: SourceFile, host: EmitHost, newDirPath: string) {
