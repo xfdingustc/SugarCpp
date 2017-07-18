@@ -2689,6 +2689,7 @@ namespace sc {
         return options.sourceMap ? jsFilePath + ".map" : undefined;
     }
 
+
     function getOutputExtension(sourceFile: SourceFile, options: CompilerOptions): string {
         return ".cpp";
     }

@@ -2103,7 +2103,7 @@ namespace sc {
         }
     }
 
-    const extensionsToRemove = [".d.ts", ".ts", ".js", ".tsx", ".jsx"];
+    const extensionsToRemove = [".scp"];
     export function removeFileExtension(path: string): string {
         for (const ext of extensionsToRemove) {
             const extensionless = tryRemoveExtension(path, ext);
