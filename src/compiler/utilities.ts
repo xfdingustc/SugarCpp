@@ -2689,7 +2689,7 @@ namespace sc {
     }
 
     function getHeaderOutputExtension(): string {
-        return ".hpp"
+        return ".h"
     }
 
     export function getSourceFilePathInNewDir(sourceFile: SourceFile, host: EmitHost, newDirPath: string) {

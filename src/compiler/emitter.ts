@@ -98,7 +98,13 @@ namespace sc {
             sourceMap.initialize(hppFilePath, sourceMapFilePath, sourceFileOrBundle);
 
             sys.write("sourceFile: " + sourceFile + sys.newLine)
-            writer.write("#include \"" + hppFilePath + "\"");
+            const baseFileName = getBaseFileName(hppFilePath);
+            writer.write("#include \"" + baseFileName + "\"");
+            const baseFileNameWithoutSuffix = baseFileName.slice(0, baseFileName.lastIndexOf("."));
+            headerWriter.write("#ifndef " + baseFileNameWithoutSuffix.toUpperCase() + "_H");
+            headerWriter.writeLine();
+            headerWriter.write("#define " + baseFileNameWithoutSuffix.toUpperCase() + "_H");
+            headerWriter.writeLine();
 
             if (bundle) {
                 bundledHelpers = createMap<boolean>();
@@ -113,7 +119,9 @@ namespace sc {
             }
 
             headerWriter.writeLine();
+            headerWriter.write("#endif");
             writer.writeLine();
+
 
             const sourceMappingURL = sourceMap.getSourceMappingURL();
             if (sourceMappingURL) {
@@ -130,7 +138,7 @@ namespace sc {
                 sourceMapDataList.push(sourceMap.getSourceMapData());
             }
 
-            
+
 
             // Write the output file
             writeFile(host, emitterDiagnostics, hppFilePath, headerWriter.getText(), compilerOptions.emitBOM, sourceFiles);
@@ -715,7 +723,7 @@ namespace sc {
                 case SyntaxKind.MetaProperty:
                     return emitMetaProperty(<MetaProperty>node);
 
-                    // Transformation nodes
+                // Transformation nodes
                 case SyntaxKind.PartiallyEmittedExpression:
                     return emitPartiallyEmittedExpression(<PartiallyEmittedExpression>node);
             }
@@ -1228,7 +1236,7 @@ namespace sc {
             const operand = node.operand;
             return operand.kind === SyntaxKind.PrefixUnaryExpression
                 && ((node.operator === SyntaxKind.PlusToken && ((<PrefixUnaryExpression>operand).operator === SyntaxKind.PlusToken || (<PrefixUnaryExpression>operand).operator === SyntaxKind.PlusPlusToken))
-                || (node.operator === SyntaxKind.MinusToken && ((<PrefixUnaryExpression>operand).operator === SyntaxKind.MinusToken || (<PrefixUnaryExpression>operand).operator === SyntaxKind.MinusMinusToken)));
+                    || (node.operator === SyntaxKind.MinusToken && ((<PrefixUnaryExpression>operand).operator === SyntaxKind.MinusToken || (<PrefixUnaryExpression>operand).operator === SyntaxKind.MinusMinusToken)));
         }
 
         function emitPostfixUnaryExpression(node: PostfixUnaryExpression) {
@@ -1865,9 +1873,9 @@ namespace sc {
             write(")");
         }
 
-                
 
-       
+
+
 
         //
         // Clauses
@@ -2752,9 +2760,9 @@ namespace sc {
 
     // Flags enum to track count of temp variables and a few dedicated names
     const enum TempFlags {
-        Auto      = 0x00000000,  // No preferred name
+        Auto = 0x00000000,  // No preferred name
         CountMask = 0x0FFFFFFF,  // Temp variable counter
-        _i        = 0x10000000,  // Use/preference flag for '_i'
+        _i = 0x10000000,  // Use/preference flag for '_i'
     }
 
     const enum ListFormat {
