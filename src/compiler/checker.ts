@@ -172,11 +172,6 @@ namespace sc {
             getExportsOfModule: getExportsOfModuleAsArray,
             getExportsAndPropertiesOfModule,
             getAmbientModules,
-            getAllAttributesTypeFromJsxOpeningLikeElement: node => {
-                node = getParseTreeNode(node, isJsxOpeningLikeElement);
-                return node ? getAllAttributesTypeFromJsxOpeningLikeElement(node) : undefined;
-            },
-            getJsxIntrinsicTagNames,
             isOptionalParameter: node => {
                 node = getParseTreeNode(node, isParameter);
                 return node ? isOptionalParameter(node) : false;
