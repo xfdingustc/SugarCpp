@@ -1483,6 +1483,7 @@ namespace sc {
     // Clauses
 
     export function createHeritageClause(token: SyntaxKind, types: ExpressionWithTypeArguments[]) {
+        sys.write("create\n");
         const node = <HeritageClause>createSynthesizedNode(SyntaxKind.HeritageClause);
         node.token = token;
         node.types = createNodeArray(types);
@@ -1491,6 +1492,7 @@ namespace sc {
 
     export function updateHeritageClause(node: HeritageClause, types: ExpressionWithTypeArguments[]) {
         if (node.types !== types) {
+            sys.write("update" + sys.newLine)
             return updateNode(createHeritageClause(node.token, types), node);
         }
         return node;
@@ -2110,7 +2112,7 @@ namespace sc {
 
     export function createMemberAccessForPropertyName(target: Expression, memberName: PropertyName, location?: TextRange): MemberExpression {
         if (isComputedPropertyName(memberName)) {
-             return setTextRange(createElementAccess(target, memberName.expression), location);
+            return setTextRange(createElementAccess(target, memberName.expression), location);
         }
         else {
             const expression = setTextRange(
@@ -3025,8 +3027,8 @@ namespace sc {
             const leftKind = getLiteralKindOfBinaryPlusOperand((<BinaryExpression>node).left);
             const literalKind = isLiteralKind(leftKind)
                 && leftKind === getLiteralKindOfBinaryPlusOperand((<BinaryExpression>node).right)
-                    ? leftKind
-                    : SyntaxKind.Unknown;
+                ? leftKind
+                : SyntaxKind.Unknown;
 
             (<BinaryPlusExpression>node).cachedLiteralKind = literalKind;
             return literalKind;

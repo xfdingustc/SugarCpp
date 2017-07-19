@@ -262,10 +262,7 @@ namespace sc {
             return node.pos;
         }
 
-        if (isJSDocNode(node)) {
-            return skipTrivia((sourceFile || getSourceFileOfNode(node)).text, node.pos, /*stopAfterLineBreak*/ false, /*stopAtComments*/ true);
-        }
-
+        
         if (includeJsDoc && node.jsDoc && node.jsDoc.length > 0) {
             return getTokenPosOfNode(node.jsDoc[0]);
         }
@@ -281,13 +278,7 @@ namespace sc {
         return skipTrivia((sourceFile || getSourceFileOfNode(node)).text, node.pos);
     }
 
-    export function isJSDocNode(node: Node) {
-        return node.kind >= SyntaxKind.FirstJSDocNode && node.kind <= SyntaxKind.LastJSDocNode;
-    }
-
-    export function isJSDocTag(node: Node) {
-        return node.kind >= SyntaxKind.FirstJSDocTagNode && node.kind <= SyntaxKind.LastJSDocTagNode;
-    }
+    
 
     export function getNonDecoratorTokenPosOfNode(node: Node, sourceFile?: SourceFile): number {
         if (nodeIsMissing(node) || !node.decorators) {

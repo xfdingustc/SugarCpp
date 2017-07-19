@@ -211,6 +211,8 @@ namespace sc {
             return undefined;
         }
 
+        sys.write("visit child: " + node.kind + sys.newLine)
+
         const kind = node.kind;
         // No need to visit nodes with no children.
         if ((kind > SyntaxKind.FirstToken && kind <= SyntaxKind.LastToken)) {
@@ -651,44 +653,6 @@ namespace sc {
             case SyntaxKind.ExternalModuleReference:
                 return updateExternalModuleReference(<ExternalModuleReference>node,
                     visitNode((<ExternalModuleReference>node).expression, visitor, isExpression));
-
-            // JSX
-            case SyntaxKind.JsxElement:
-                return updateJsxElement(<JsxElement>node,
-                    visitNode((<JsxElement>node).openingElement, visitor, isJsxOpeningElement),
-                    visitNodes((<JsxElement>node).children, visitor, isJsxChild),
-                    visitNode((<JsxElement>node).closingElement, visitor, isJsxClosingElement));
-
-            case SyntaxKind.JsxAttributes:
-                return updateJsxAttributes(<JsxAttributes>node,
-                    visitNodes((<JsxAttributes>node).properties, visitor, isJsxAttributeLike));
-
-            case SyntaxKind.JsxSelfClosingElement:
-                return updateJsxSelfClosingElement(<JsxSelfClosingElement>node,
-                    visitNode((<JsxSelfClosingElement>node).tagName, visitor, isJsxTagNameExpression),
-                    visitNode((<JsxSelfClosingElement>node).attributes, visitor, isJsxAttributes));
-
-            case SyntaxKind.JsxOpeningElement:
-                return updateJsxOpeningElement(<JsxOpeningElement>node,
-                    visitNode((<JsxOpeningElement>node).tagName, visitor, isJsxTagNameExpression),
-                    visitNode((<JsxOpeningElement>node).attributes, visitor, isJsxAttributes));
-
-            case SyntaxKind.JsxClosingElement:
-                return updateJsxClosingElement(<JsxClosingElement>node,
-                    visitNode((<JsxClosingElement>node).tagName, visitor, isJsxTagNameExpression));
-
-            case SyntaxKind.JsxAttribute:
-                return updateJsxAttribute(<JsxAttribute>node,
-                    visitNode((<JsxAttribute>node).name, visitor, isIdentifier),
-                    visitNode((<JsxAttribute>node).initializer, visitor, isStringLiteralOrJsxExpression));
-
-            case SyntaxKind.JsxSpreadAttribute:
-                return updateJsxSpreadAttribute(<JsxSpreadAttribute>node,
-                    visitNode((<JsxSpreadAttribute>node).expression, visitor, isExpression));
-
-            case SyntaxKind.JsxExpression:
-                return updateJsxExpression(<JsxExpression>node,
-                    visitNode((<JsxExpression>node).expression, visitor, isExpression));
 
             // Clauses
             case SyntaxKind.CaseClause:
@@ -1168,43 +1132,10 @@ namespace sc {
                 result = reduceNode((<ExternalModuleReference>node).expression, cbNode, result);
                 break;
 
-            // JSX
-            case SyntaxKind.JsxElement:
-                result = reduceNode((<JsxElement>node).openingElement, cbNode, result);
-                result = reduceLeft((<JsxElement>node).children, cbNode, result);
-                result = reduceNode((<JsxElement>node).closingElement, cbNode, result);
-                break;
-
-            case SyntaxKind.JsxSelfClosingElement:
-            case SyntaxKind.JsxOpeningElement:
-                result = reduceNode((<JsxSelfClosingElement | JsxOpeningElement>node).tagName, cbNode, result);
-                result = reduceNode((<JsxSelfClosingElement | JsxOpeningElement>node).attributes, cbNode, result);
-                break;
-
-            case SyntaxKind.JsxAttributes:
-                result = reduceNodes((<JsxAttributes>node).properties, cbNodes, result);
-
-            case SyntaxKind.JsxClosingElement:
-                result = reduceNode((<JsxClosingElement>node).tagName, cbNode, result);
-                break;
-
-            case SyntaxKind.JsxAttribute:
-                result = reduceNode((<JsxAttribute>node).name, cbNode, result);
-                result = reduceNode((<JsxAttribute>node).initializer, cbNode, result);
-                break;
-
-            case SyntaxKind.JsxSpreadAttribute:
-                result = reduceNode((<JsxSpreadAttribute>node).expression, cbNode, result);
-                break;
-
-            case SyntaxKind.JsxExpression:
-                result = reduceNode((<JsxExpression>node).expression, cbNode, result);
-                break;
-
             // Clauses
             case SyntaxKind.CaseClause:
                 result = reduceNode((<CaseClause>node).expression, cbNode, result);
-                // fall-through
+            // fall-through
 
             case SyntaxKind.DefaultClause:
                 result = reduceNodes((<CaseClause | DefaultClause>node).statements, cbNodes, result);
@@ -1358,37 +1289,37 @@ namespace sc {
 
         export const assertEachNode = shouldAssert(AssertionLevel.Normal)
             ? (nodes: Node[], test: (node: Node) => boolean, message?: string) => assert(
-                    test === undefined || every(nodes, test),
-                    message || "Unexpected node.",
-                    () => `Node array did not pass test '${getFunctionName(test)}'.`)
+                test === undefined || every(nodes, test),
+                message || "Unexpected node.",
+                () => `Node array did not pass test '${getFunctionName(test)}'.`)
             : noop;
 
         export const assertNode = shouldAssert(AssertionLevel.Normal)
             ? (node: Node, test: (node: Node) => boolean, message?: string) => assert(
-                    test === undefined || test(node),
-                    message || "Unexpected node.",
-                    () => `Node ${formatSyntaxKind(node.kind)} did not pass test '${getFunctionName(test)}'.`)
+                test === undefined || test(node),
+                message || "Unexpected node.",
+                () => `Node ${formatSyntaxKind(node.kind)} did not pass test '${getFunctionName(test)}'.`)
             : noop;
 
         export const assertOptionalNode = shouldAssert(AssertionLevel.Normal)
             ? (node: Node, test: (node: Node) => boolean, message?: string) => assert(
-                    test === undefined || node === undefined || test(node),
-                    message || "Unexpected node.",
-                    () => `Node ${formatSyntaxKind(node.kind)} did not pass test '${getFunctionName(test)}'.`)
+                test === undefined || node === undefined || test(node),
+                message || "Unexpected node.",
+                () => `Node ${formatSyntaxKind(node.kind)} did not pass test '${getFunctionName(test)}'.`)
             : noop;
 
         export const assertOptionalToken = shouldAssert(AssertionLevel.Normal)
             ? (node: Node, kind: SyntaxKind, message?: string) => assert(
-                    kind === undefined || node === undefined || node.kind === kind,
-                    message || "Unexpected node.",
-                    () => `Node ${formatSyntaxKind(node.kind)} was not a '${formatSyntaxKind(kind)}' token.`)
+                kind === undefined || node === undefined || node.kind === kind,
+                message || "Unexpected node.",
+                () => `Node ${formatSyntaxKind(node.kind)} was not a '${formatSyntaxKind(kind)}' token.`)
             : noop;
 
         export const assertMissingNode = shouldAssert(AssertionLevel.Normal)
             ? (node: Node, message?: string) => assert(
-                    node === undefined,
-                    message || "Unexpected node.",
-                    () => `Node ${formatSyntaxKind(node.kind)} was unexpected'.`)
+                node === undefined,
+                message || "Unexpected node.",
+                () => `Node ${formatSyntaxKind(node.kind)} was unexpected'.`)
             : noop;
 
         function getFunctionName(func: Function) {

@@ -1976,6 +1976,7 @@ namespace sc {
          */
         function visitHeritageClause(node: HeritageClause): HeritageClause {
             if (node.token === SyntaxKind.ExtendsKeyword) {
+                sys.write("visit" + sys.newLine);
                 const types = visitNodes(node.types, visitor, isExpressionWithTypeArguments, 0, 1);
                 return setTextRange(
                     createHeritageClause(

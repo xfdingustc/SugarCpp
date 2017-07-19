@@ -363,86 +363,10 @@ namespace sc {
             case SyntaxKind.MissingDeclaration:
                 return visitNodes(cbNodes, node.decorators);
 
-            case SyntaxKind.JsxElement:
-                return visitNode(cbNode, (<JsxElement>node).openingElement) ||
-                    visitNodes(cbNodes, (<JsxElement>node).children) ||
-                    visitNode(cbNode, (<JsxElement>node).closingElement);
-            case SyntaxKind.JsxSelfClosingElement:
-            case SyntaxKind.JsxOpeningElement:
-                return visitNode(cbNode, (<JsxOpeningLikeElement>node).tagName) ||
-                    visitNode(cbNode, (<JsxOpeningLikeElement>node).attributes);
-            case SyntaxKind.JsxAttributes:
-                return visitNodes(cbNodes, (<JsxAttributes>node).properties);
-            case SyntaxKind.JsxAttribute:
-                return visitNode(cbNode, (<JsxAttribute>node).name) ||
-                    visitNode(cbNode, (<JsxAttribute>node).initializer);
-            case SyntaxKind.JsxSpreadAttribute:
-                return visitNode(cbNode, (<JsxSpreadAttribute>node).expression);
-            case SyntaxKind.JsxExpression:
-                return visitNode(cbNode, (node as JsxExpression).dotDotDotToken) ||
-                    visitNode(cbNode, (node as JsxExpression).expression);
-            case SyntaxKind.JsxClosingElement:
-                return visitNode(cbNode, (<JsxClosingElement>node).tagName);
-
-            case SyntaxKind.JSDocTypeExpression:
-                return visitNode(cbNode, (<JSDocTypeExpression>node).type);
-            case SyntaxKind.JSDocUnionType:
-                return visitNodes(cbNodes, (<JSDocUnionType>node).types);
-            case SyntaxKind.JSDocTupleType:
-                return visitNodes(cbNodes, (<JSDocTupleType>node).types);
-            case SyntaxKind.JSDocArrayType:
-                return visitNode(cbNode, (<JSDocArrayType>node).elementType);
-            case SyntaxKind.JSDocNonNullableType:
-                return visitNode(cbNode, (<JSDocNonNullableType>node).type);
-            case SyntaxKind.JSDocNullableType:
-                return visitNode(cbNode, (<JSDocNullableType>node).type);
-            case SyntaxKind.JSDocRecordType:
-                return visitNode(cbNode, (<JSDocRecordType>node).literal);
-            case SyntaxKind.JSDocTypeReference:
-                return visitNode(cbNode, (<JSDocTypeReference>node).name) ||
-                    visitNodes(cbNodes, (<JSDocTypeReference>node).typeArguments);
-            case SyntaxKind.JSDocOptionalType:
-                return visitNode(cbNode, (<JSDocOptionalType>node).type);
-            case SyntaxKind.JSDocFunctionType:
-                return visitNodes(cbNodes, (<JSDocFunctionType>node).parameters) ||
-                    visitNode(cbNode, (<JSDocFunctionType>node).type);
-            case SyntaxKind.JSDocVariadicType:
-                return visitNode(cbNode, (<JSDocVariadicType>node).type);
-            case SyntaxKind.JSDocConstructorType:
-                return visitNode(cbNode, (<JSDocConstructorType>node).type);
-            case SyntaxKind.JSDocThisType:
-                return visitNode(cbNode, (<JSDocThisType>node).type);
-            case SyntaxKind.JSDocRecordMember:
-                return visitNode(cbNode, (<JSDocRecordMember>node).name) ||
-                    visitNode(cbNode, (<JSDocRecordMember>node).type);
-            case SyntaxKind.JSDocComment:
-                return visitNodes(cbNodes, (<JSDoc>node).tags);
-            case SyntaxKind.JSDocParameterTag:
-                return visitNode(cbNode, (<JSDocParameterTag>node).preParameterName) ||
-                    visitNode(cbNode, (<JSDocParameterTag>node).typeExpression) ||
-                    visitNode(cbNode, (<JSDocParameterTag>node).postParameterName);
-            case SyntaxKind.JSDocReturnTag:
-                return visitNode(cbNode, (<JSDocReturnTag>node).typeExpression);
-            case SyntaxKind.JSDocTypeTag:
-                return visitNode(cbNode, (<JSDocTypeTag>node).typeExpression);
-            case SyntaxKind.JSDocAugmentsTag:
-                return visitNode(cbNode, (<JSDocAugmentsTag>node).typeExpression);
-            case SyntaxKind.JSDocTemplateTag:
-                return visitNodes(cbNodes, (<JSDocTemplateTag>node).typeParameters);
-            case SyntaxKind.JSDocTypedefTag:
-                return visitNode(cbNode, (<JSDocTypedefTag>node).typeExpression) ||
-                    visitNode(cbNode, (<JSDocTypedefTag>node).fullName) ||
-                    visitNode(cbNode, (<JSDocTypedefTag>node).name) ||
-                    visitNode(cbNode, (<JSDocTypedefTag>node).jsDocTypeLiteral);
-            case SyntaxKind.JSDocTypeLiteral:
-                return visitNodes(cbNodes, (<JSDocTypeLiteral>node).jsDocPropertyTags);
-            case SyntaxKind.JSDocPropertyTag:
-                return visitNode(cbNode, (<JSDocPropertyTag>node).typeExpression) ||
-                    visitNode(cbNode, (<JSDocPropertyTag>node).name);
+            
             case SyntaxKind.PartiallyEmittedExpression:
                 return visitNode(cbNode, (<PartiallyEmittedExpression>node).expression);
-            case SyntaxKind.JSDocLiteralType:
-                    return visitNode(cbNode, (<JSDocLiteralType>node).literal);
+            
         }
     }
 
