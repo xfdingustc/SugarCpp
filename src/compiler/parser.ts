@@ -5958,8 +5958,6 @@ namespace sc {
 
             function parseBasicTypeExpression(): JSDocType {
                 switch (token()) {
-                    case SyntaxKind.AsteriskToken:
-                        return parseJSDocAllType();
                     case SyntaxKind.QuestionToken:
                         return parseJSDocUnknownOrNullableType();
                     case SyntaxKind.OpenParenToken:
@@ -6152,11 +6150,7 @@ namespace sc {
                 return types;
             }
 
-            function parseJSDocAllType(): JSDocAllType {
-                const result = <JSDocAllType>createNode(SyntaxKind.JSDocAllType);
-                nextToken();
-                return finishNode(result);
-            }
+            
 
             function parseJSDocLiteralType(): JSDocLiteralType {
                 const result = <JSDocLiteralType>createNode(SyntaxKind.JSDocLiteralType);

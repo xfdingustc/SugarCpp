@@ -355,7 +355,7 @@ namespace sc {
         // JSDoc nodes
         JSDocTypeExpression,
         // The * type
-        JSDocAllType,
+
         // The ? type
         JSDocUnknownType,
         JSDocArrayType,
@@ -1964,10 +1964,7 @@ namespace sc {
         _jsDocTypeBrand: any;
     }
 
-    export interface JSDocAllType extends JSDocType {
-        kind: SyntaxKind.JSDocAllType;
-    }
-
+    
     export interface JSDocUnknownType extends JSDocType {
         kind: SyntaxKind.JSDocUnknownType;
     }

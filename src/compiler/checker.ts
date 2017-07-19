@@ -6866,7 +6866,6 @@ namespace sc {
         function getTypeFromTypeNode(node: TypeNode): Type {
             switch (node.kind) {
                 case SyntaxKind.AnyKeyword:
-                case SyntaxKind.JSDocAllType:
                 case SyntaxKind.JSDocUnknownType:
                     return anyType;
                 case SyntaxKind.StringKeyword:
