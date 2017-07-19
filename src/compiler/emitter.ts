@@ -97,7 +97,6 @@ namespace sc {
             const sourceFiles = bundle ? bundle.sourceFiles : [sourceFile];
             sourceMap.initialize(hppFilePath, sourceMapFilePath, sourceFileOrBundle);
 
-            sys.write("sourceFile: " + sourceFile + sys.newLine)
             const baseFileName = getBaseFileName(hppFilePath);
             writer.write("#include \"" + baseFileName + "\"");
             const baseFileNameWithoutSuffix = baseFileName.slice(0, baseFileName.lastIndexOf("."));
@@ -110,7 +109,6 @@ namespace sc {
                 bundledHelpers = createMap<boolean>();
                 isOwnFileEmit = false;
                 printer.writeBundle(bundle, writer);
-                sys.write(" bundle writer: " + writer.getText() + sys.newLine)
             }
             else {
                 isOwnFileEmit = true;
@@ -349,6 +347,7 @@ namespace sc {
             tempFlagsStack = [];
             tempFlags = TempFlags.Auto;
             comments.reset();
+            setHeaderWriter(undefined);
             setWriter(/*output*/ undefined);
         }
 
@@ -393,6 +392,7 @@ namespace sc {
         }
 
         function pipelineEmitWithHint(hint: EmitHint, node: Node): void {
+            sys.write("emit with hint: " + hint + " node: " + getTextOfNode(node) + " node kind: " + node.kind + sys.newLine);
             switch (hint) {
                 case EmitHint.SourceFile: return pipelineEmitSourceFile(node);
                 case EmitHint.IdentifierName: return pipelineEmitIdentifierName(node);
@@ -527,6 +527,7 @@ namespace sc {
                     return emitVariableStatement(<VariableStatement>node);
                 case SyntaxKind.EmptyStatement:
                     return emitEmptyStatement();
+
                 case SyntaxKind.ExpressionStatement:
                     return emitExpressionStatement(<ExpressionStatement>node);
                 case SyntaxKind.IfStatement:
@@ -780,6 +781,7 @@ namespace sc {
 
         function emitIdentifier(node: Identifier) {
             write(getTextOfNode(node, /*includeTrivia*/ false));
+            writeHeader(getTextOfNode(node, /*includeTrivia*/ false));
         }
 
         //
@@ -1369,6 +1371,10 @@ namespace sc {
             write(";");
         }
 
+        function emitExtendsKeyword() {
+            writeHeader(" : public ");
+        }
+
         function emitExpressionStatement(node: ExpressionStatement) {
             emitExpression(node.expression);
             write(";");
@@ -1678,7 +1684,6 @@ namespace sc {
             emitDecorators(node, node.decorators);
             emitModifiers(node, node.modifiers);
             writeHeader("class");
-            write("class");
             emitNodeWithPrefix(" ", node.name, emitIdentifierName);
 
             const indentedFlag = getEmitFlags(node) & EmitFlags.Indented;
@@ -1914,9 +1919,9 @@ namespace sc {
         }
 
         function emitHeritageClause(node: HeritageClause) {
-            write(" ");
-            writeTokenText(node.token);
-            write(" ");
+            writeHeader(" : public ");
+            // writeTokenText(node.token);
+            // writeHeader(" ");
             emitList(node, node.types, ListFormat.HeritageClauseTypes);
         }
 
@@ -2051,7 +2056,7 @@ namespace sc {
 
         function emitNodeWithPrefix(prefix: string, node: Node, emit: (node: Node) => void) {
             if (node) {
-                write(prefix);
+                writeHeader(prefix);
                 emit(node);
             }
         }

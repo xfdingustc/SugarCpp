@@ -2,8 +2,8 @@
 /// <reference path="performance.ts" />
 
 namespace sc {
-    /** The version of the TypeScript compiler release */
-    export const version = "2.3.0";
+    /** The version of the SugarCpp compiler release */
+    export const version = "0.0.1";
 }
 
 /* @internal */

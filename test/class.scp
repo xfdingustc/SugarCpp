@@ -1,3 +1,5 @@
-class TestClass {
-    
+class TestClass extends TestClassParent {
+    public TestClass(int val) {
+        
+    }
 }
