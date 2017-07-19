@@ -399,23 +399,7 @@ namespace sc {
         return IncrementalParser.updateSourceFile(sourceFile, newText, textChangeRange, aggressiveChecks);
     }
 
-    /* @internal */
-    export function parseIsolatedJSDocComment(content: string, start?: number, length?: number) {
-        const result = Parser.JSDocParser.parseIsolatedJSDocComment(content, start, length);
-        if (result && result.jsDoc) {
-            // because the jsDocComment was parsed out of the source file, it might
-            // not be covered by the fixupParentReferences.
-            Parser.fixupParentReferences(result.jsDoc);
-        }
-
-        return result;
-    }
-
-    /* @internal */
-    // Exposed only for testing.
-    export function parseJSDocTypeExpressionForTests(content: string, start?: number, length?: number) {
-        return Parser.JSDocParser.parseJSDocTypeExpressionForTests(content, start, length);
-    }
+    
 
     // Implement the parser as a singleton module.  We do this for perf reasons because creating
     // parser instances can actually be expensive enough to impact us on projects with many source
@@ -614,21 +598,6 @@ namespace sc {
 
 
         function addJSDocComment<T extends Node>(node: T): T {
-            const comments = getJSDocCommentRanges(node, sourceFile.text);
-            if (comments) {
-                for (const comment of comments) {
-                    const jsDoc = JSDocParser.parseJSDocComment(node, comment.pos, comment.end - comment.pos);
-                    if (!jsDoc) {
-                        continue;
-                    }
-
-                    if (!node.jsDoc) {
-                        node.jsDoc = [];
-                    }
-                    node.jsDoc.push(jsDoc);
-                }
-            }
-
             return node;
         }
 
