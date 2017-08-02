@@ -58,7 +58,7 @@ let host = cmdLineOptions["host"];
 const isWin = /^win/.test(process.platform);
 
 // Constants
-const compilerDirectory = "src/compiler/";
+const compilerDirectory = "src2/compiler/";
 const scriptsDirectory = "scripts/";
 const builtDirectory = "built/";
 const builtLocalDirectory = "built/local/";
@@ -187,10 +187,11 @@ gulp.task(diagnosticInfoMapTs, [processDiagnosticMessagesJs], (done) => {
 });
 
 
-gulp.task("generate-diagnostics", "Generates a diagnostic file in TypeScript based on an input JSON file", [diagnosticInfoMapTs]);
+// gulp.task("generate-diagnostics", "Generates a diagnostic file in TypeScript based on an input JSON file", [diagnosticInfoMapTs]);
+gulp.task("generate-diagnostics", "Generates a diagnostic file in TypeScript based on an input JSON file", []);
 
 gulp.task(builtLocalCompiler, false, [serviceFile], () => {
-    const localCompilerProject = tsc.createProject("src/compiler/tsconfig.json", getCompilerSettings({}, false));
+    const localCompilerProject = tsc.createProject("src2/compiler/tsconfig.json", getCompilerSettings({}, false));
     return localCompilerProject.src()
         .pipe(newer(builtLocalCompiler))
         .pipe(sourcemaps.init())

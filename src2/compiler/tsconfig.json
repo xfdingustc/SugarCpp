@@ -1,0 +1,14 @@
+{
+    "extends": "../tsconfig-base",
+    "compilerOptions": {
+        "removeComments": true,
+        "outFile": "../../built/local/scc2.js",
+        "declaration": true
+    },
+    "files": [
+        "commandLineParser.ts",
+        "scc.ts",
+        "sys.ts",
+        "types.ts"
+    ]
+}
