@@ -11,9 +11,20 @@ namespace SugarCpp {
     }
 
 
+    function getSourceFile(filename: string): SourceFile {
+        try {
+            var text = sys.readFile(filename);
+        } catch (error) {
+            return undefined;
+        }
+        
+        return createSourceFile(filename, text);
+    }
+
     function createCompileHost(): CompilerHost {
         return {
-
+            getSourceFile: getSourceFile,
+            getCanonicalFileName: getCanonicalFileName
         }
     }
 }
