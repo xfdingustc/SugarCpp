@@ -6,6 +6,7 @@
         "declaration": true
     },
     "files": [
+        "binder.ts",
         "commandLineParser.ts",
         "parser.ts",
         "scc.ts",

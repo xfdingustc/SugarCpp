@@ -5,9 +5,11 @@
 namespace SugarCpp {
     export function createProgram(rootNames: string[], host: CompilerHost): Program {
         var program: Program;
+        var files: SourceFile[] = [];
 
         forEach(rootNames, name => processRootFile(name));
         program = {
+            getSourceFiles:() => files,
             getCompilerHost: () => host,
             getTypeChecker: () => createTypeChecker(program),
         }
