@@ -1,10 +1,20 @@
 /// <reference path="sys.ts"/>
+/// <reference path="parser.ts"/>
 
 namespace SugarCpp {
     export function executeCommandLine(args: string[]): number {
         var cmds = parseCommandLine(args);
-        sys.print(cmds.filenames[0]);
+        var program = createProgram(cmds.filenames, createCompileHost());
+        var checker = program.getTypeChecker();
+
         return 1;
+    }
+
+
+    function createCompileHost(): CompilerHost {
+        return {
+
+        }
     }
 }
 

@@ -7,6 +7,7 @@
     },
     "files": [
         "commandLineParser.ts",
+        "parser.ts",
         "scc.ts",
         "sys.ts",
         "types.ts"
