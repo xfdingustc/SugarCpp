@@ -7,8 +7,10 @@
     },
     "files": [
         "binder.ts",
+        "checker.ts",
         "commandLineParser.ts",
         "parser.ts",
+        "scanner.ts",
         "scc.ts",
         "sys.ts",
         "types.ts"

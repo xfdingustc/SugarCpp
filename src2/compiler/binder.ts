@@ -4,8 +4,8 @@ namespace SugarCpp {
         var parent: Node;
         var container: Declaration;
         var symbolCount = 0;
-        
 
+        sys.print("fuck");
         if (!file.locals) {
             file.locals = {};
             container = file;
@@ -18,7 +18,13 @@ namespace SugarCpp {
             node.parent = parent;
             switch (node.kind) {
                 case SyntaxKind.SourceFile:
-                    break;    
+
+                default:
+                    sys.print("default");
+                    var saveParent = parent;
+                    parent = node;
+                    forEachChild(node, bind);
+                    parent = saveParent;
             }
         }
     }

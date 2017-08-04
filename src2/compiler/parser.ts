@@ -1,5 +1,6 @@
 /// <reference path="types.ts"/>
 /// <reference path="core.ts"/>
+/// <reference path="scanner.ts"/>
 /// <reference path="checker.ts"/>
 
 namespace SugarCpp {
@@ -18,12 +19,127 @@ namespace SugarCpp {
         return node;
     }
 
+    enum ModifierContext {
+        SourceElement,
+    }
+
+
+    export function forEachChild<T>(node: Node, cbNode: (node: Node) => T, cbNodes?: (nodes: Node[]) => T): T {
+        function children(nodes: Node[]) {
+            if (nodes) {
+                if (cbNodes) {
+                    return cbNodes(nodes);
+                    var result: T;
+                    for (var i = 0, len = nodes.length; i < len; i++) {
+                        if (result = cbNode(nodes[i])) {
+                            break;
+                        }
+                    }
+                    return result;
+                }
+            }
+        }
+        if (!node) {
+            return;
+        }
+
+        switch (node.kind) {
+            case SyntaxKind.SourceFile:
+                var state = (<Block>node).statements;
+                sys.print("statements: " + state.length);
+                return children((<Block>node).statements);
+        }
+    }
+
+    enum ParsingContext {
+        SourceElements,
+    }
+
     export function createSourceFile(filename: string, sourceText: string): SourceFile {
         var file: SourceFile;
+        var scanner: Scanner;
+        var token: SyntaxKind;
+        var parsingContext: ParsingContext;
+
+        function getNodePos(): number {
+            return scanner.getStartPos();
+        }
+
+        function getNodeEnd(): number {
+            return scanner.getStartPos();
+        }
+
+        function isListElement(kind: ParsingContext): boolean {
+            switch (kind) {
+                case ParsingContext.SourceElements:
+                    return isSourceElement();
+            }
+        }
+
+        function isListTerminator(kind: ParsingContext): boolean {
+            switch (kind) {
+                case ParsingContext.SourceElements:
+                    return false;
+            }
+        }
+
+        function parseList<T>(kind: ParsingContext, parseElement: () => T): NodeArray<T> {
+            var saveParsingContext = parsingContext;
+            parsingContext != 1 << kind;
+            var result = <NodeArray<T>>[];
+            result.pos = getNodePos();
+            while (!isListTerminator(kind)) {
+                if (isListElement(kind)) {
+                    result.push(parseElement());
+                }
+            }
+            result.end = getNodeEnd();
+            parsingContext = saveParsingContext;
+            return result;
+        }
+
+        function isIdentifier(): boolean {
+            return token === SyntaxKind.Identifier || token > SyntaxKind.LastReservedWord;
+        }
+
+        function isExpression(): boolean {
+            switch (token) {
+                default:
+                    return isIdentifier();
+            }
+        }
+
+        function isStatement(): boolean {
+            switch (token) {
+                default:
+                    return isExpression();
+            }
+        }
+        function isDeclaration() {
+            switch (token) {
+
+            }
+        }
+
+        function isSourceElement(): boolean {
+            return isDeclaration() || isStatement();
+        }
+
+        function parseSourceElement() {
+            return parseSourceElementOrModuleElement(ModifierContext.SourceElement)
+        }
+
+        function parseSourceElementOrModuleElement(modifierContext: ModifierContext): Statement {
+            return undefined;
+        }
+
+        scanner = createScanner(sourceText);
+
         var rootNodeFlags: NodeFlags = 0;
         file = <SourceFile>createRootNode(SyntaxKind.SourceFile, 0, sourceText.length, rootNodeFlags);
         file.filename = normalizePath(filename);
         file.text = sourceText;
+        file.statements = parseList(ParsingContext.SourceElements, parseSourceElement)
         return file;
     }
 
@@ -48,6 +164,7 @@ namespace SugarCpp {
         }
 
         function processRootFile(filename: string) {
+            sys.print("processRootFile: " + filename)
             processSourceFile(filename);
         }
 
@@ -67,7 +184,8 @@ namespace SugarCpp {
             } else {
                 file = host.getSourceFile(filename);
                 if (file) {
-                    filesByName[host.getCanonicalFileName(filename)] = file
+                    filesByName[host.getCanonicalFileName(filename)] = file;
+                    files.push(file);
                 }
             }
             return file;

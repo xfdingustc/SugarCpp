@@ -6,11 +6,17 @@ namespace SugarCpp {
 
     export enum SyntaxKind {
         Unknown,
+        // Identifiers
+        Identifier,
+
+        WithKeyword,
         // Top-level nodes
         SourceFile,
 
         // Enum value count
         Count,
+
+        LastReservedWord = WithKeyword,
     }
 
     export enum NodeFlags {
@@ -18,7 +24,7 @@ namespace SugarCpp {
     }
 
     export interface Symbol {
-        
+
     }
 
     export interface SymbolTable {
@@ -100,7 +106,7 @@ namespace SugarCpp {
         narrowNoBreakSpace = 0x202F,
         ideographicSpace = 0x3000,
         mathematicalSpace = 0x205F,
-        ogham = 0x1680, 
+        ogham = 0x1680,
 
         _ = 0x5F,
         $ = 0x24,

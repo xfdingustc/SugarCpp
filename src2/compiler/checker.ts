@@ -48,6 +48,7 @@ namespace SugarCpp {
             });
         }
 
+        initializeTypeChecker();
         checker = {
             getDiagnostics: getDiagnostics,
         }
