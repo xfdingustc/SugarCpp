@@ -16,6 +16,10 @@ namespace SugarCpp {
 
         function bind(node: Node) {
             node.parent = parent;
+            switch (node.kind) {
+                case SyntaxKind.SourceFile:
+                    break;    
+            }
         }
     }
 

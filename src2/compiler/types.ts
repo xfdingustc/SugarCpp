@@ -28,6 +28,7 @@ namespace SugarCpp {
     export interface Node extends TextRange {
         kind: SyntaxKind;
         flags: NodeFlags;
+        id?: number;
         parent?: Node;
         locals?: SymbolTable;
     }
@@ -47,7 +48,7 @@ namespace SugarCpp {
     }
 
     export interface Block extends Statement {
-        Statement: NodeArray<Statement>
+        statements: NodeArray<Statement>
     }
 
     export interface SourceFile extends Block {
@@ -205,12 +206,36 @@ namespace SugarCpp {
         verticalTab = 0x0B,           // \v
     }
 
+    export interface Diagnostic {
+        file: SourceFile;
+        start: number;
+        length: number;
+        messageText: string;
+        category: DiagnosticCategory;
+        code: number;
+    }
+
+    export enum DiagnosticCategory {
+        Warning,
+        Error,
+        Message,
+        NoPrefix
+    }
+
     export interface CompilerHost {
         getSourceFile(filename: string): SourceFile;
         getCanonicalFileName(fileName: string): string;
     }
 
     export interface TypeChecker {
+        getDiagnostics(sourceFile?: SourceFile): Diagnostic[];
+    }
 
+    export enum NodeCheckFlags {
+        TypeChecked = 0x00000001,
+    }
+
+    export interface NodeLinks {
+        flags?: NodeCheckFlags;
     }
 }

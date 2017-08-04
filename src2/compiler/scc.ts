@@ -5,7 +5,10 @@ namespace SugarCpp {
     export function executeCommandLine(args: string[]): number {
         var cmds = parseCommandLine(args);
         var program = createProgram(cmds.filenames, createCompileHost());
+        
+        var errors;
         var checker = program.getTypeChecker();
+        errors = checker.getDiagnostics();
 
         return 1;
     }
