@@ -6,8 +6,12 @@ namespace SugarCpp {
 
     export enum SyntaxKind {
         Unknown,
+        EndOfFileToken,
         // Identifiers
         Identifier,
+
+        // Reserved words
+        ClassKeyword,
 
         WithKeyword,
         // Top-level nodes

@@ -19,6 +19,10 @@ namespace SugarCpp {
         return node;
     }
 
+    interface ReferenceComments {
+
+    }
+
     enum ModifierContext {
         SourceElement,
     }
@@ -125,12 +129,32 @@ namespace SugarCpp {
             return isDeclaration() || isStatement();
         }
 
+        function parseStatement(): Statement {
+            switch (token) {
+                default:
+                    return undefined;    
+            }
+        }
+
         function parseSourceElement() {
             return parseSourceElementOrModuleElement(ModifierContext.SourceElement)
         }
 
         function parseSourceElementOrModuleElement(modifierContext: ModifierContext): Statement {
-            return undefined;
+            if (isDeclaration()) {
+
+            }
+            var statementStart = scanner.getTokenPos();
+            var statement = parseStatement();
+            
+            return statement;
+        }
+
+        function processReferenceComments(): ReferenceComments {
+            token = scanner.scan();
+            return {
+                
+            };
         }
 
         scanner = createScanner(sourceText);
@@ -139,6 +163,7 @@ namespace SugarCpp {
         file = <SourceFile>createRootNode(SyntaxKind.SourceFile, 0, sourceText.length, rootNodeFlags);
         file.filename = normalizePath(filename);
         file.text = sourceText;
+        var referenceComments = processReferenceComments();
         file.statements = parseList(ParsingContext.SourceElements, parseSourceElement)
         return file;
     }
